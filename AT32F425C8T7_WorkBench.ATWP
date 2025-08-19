@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root>
+    <WorkBenchVersion>
+        <Version>V1.2.00</Version>
+    </WorkBenchVersion>
+    <MCUInfo>
+        <MCUSerials>AT32F425</MCUSerials>
+        <MCUName>AT32F425C8T7</MCUName>
+        <MCUPackage>LQFP48</MCUPackage>
+    </MCUInfo>
+    <ADC1>
+        <Mode>
+            <ModeSub name="IN6" value="TRUE"/>
+            <ModeSub name="IN8" value="TRUE"/>
+            <ModeSub name="IN9" value="TRUE"/>
+        </Mode>
+        <Parameters>
+            <ParametersSub name="Channel_OrdinarySequence_1" value="ADC_CHANNEL_8"/>
+            <ParametersSub name="SamplingRate_OrdinarySequence_1" value="1.714"/>
+        </Parameters>
+    </ADC1>
+    <DEBUG>
+        <Mode>
+            <ModeSub name="SWD" value="TRUE"/>
+        </Mode>
+    </DEBUG>
+    <SYSTEM>
+        <Mode>
+            <ModeSub name="Time_Base" value=""/>
+        </Mode>
+    </SYSTEM>
+    <TMR1>
+        <Mode>
+            <ModeSub name="Channel1 mode" value="Output_CH1"/>
+            <ModeSub name="Activated" value="TRUE"/>
+        </Mode>
+        <Parameters>
+            <ParametersSub name="DividerValue" value="95"/>
+            <ParametersSub name="Period" value="39"/>
+            <ParametersSub name="OCMode_1" value="TMR_OUTPUT_CONTROL_PWM_MODE_A"/>
+        </Parameters>
+    </TMR1>
+    <TMR2>
+        <Mode>
+            <ModeSub name="Channel1 mode" value="Output_CH1"/>
+            <ModeSub name="Activated" value="TRUE"/>
+        </Mode>
+        <Parameters>
+            <ParametersSub name="DividerValue" value="95"/>
+            <ParametersSub name="Period" value="249"/>
+            <ParametersSub name="OCMode_1" value="TMR_OUTPUT_CONTROL_PWM_MODE_A"/>
+        </Parameters>
+    </TMR2>
+    <TMR17>
+        <Mode>
+            <ModeSub name="Activated" value="TRUE"/>
+        </Mode>
+        <Parameters>
+            <ParametersSub name="DividerValue" value="95"/>
+            <ParametersSub name="Period" value="999"/>
+        </Parameters>
+    </TMR17>
+    <USART1>
+        <Mode>
+            <ModeSub name="Mode" value="Asynchronous"/>
+        </Mode>
+        <Parameters>
+            <ParametersSub name="RealBaudRate" value="115246"/>
+        </Parameters>
+    </USART1>
+    <USART2>
+        <Mode>
+            <ModeSub name="Mode" value="Asynchronous"/>
+        </Mode>
+        <Parameters>
+            <ParametersSub name="RealBaudRate" value="115246"/>
+        </Parameters>
+    </USART2>
+    <FREERTOS>
+        <Mode>
+            <ModeSub name="Activated" value="TRUE"/>
+        </Mode>
+        <Parameters>
+            <ParametersSub name="MCU_SRAM_SIZE" value="20480"/>
+            <ParametersSub name="configCPU_CLOCK_HZ" value="96000000"/>
+            <ParametersSub name="configUSE_RECURSIVE_MUTEXES" value="1"/>
+        </Parameters>
+        <Tasks>
+            <ParametersGroup>
+                <ParametersSub name="TaskName" value="my_task01"/>
+                <ParametersSub name="TaskPriority" value="0"/>
+                <ParametersSub name="TaskStackSize" value="128"/>
+                <ParametersSub name="TaskEntryFunction" value="my_task01_func"/>
+                <ParametersSub name="TaskCodeGenerationOption" value="Default"/>
+                <ParametersSub name="TaskParameters" value="NULL"/>
+                <ParametersSub name="TaskAllocation" value="Dynamic"/>
+                <ParametersSub name="TaskStackBuffer" value="NULL"/>
+                <ParametersSub name="TaskBuffer" value="NULL"/>
+            </ParametersGroup>
+        </Tasks>
+    </FREERTOS>
+    <DMA>
+        <ADC1>
+            <ParametersSub name="Instance" value="DMA1_Channel3"/>
+        </ADC1>
+        <USART1_RX>
+            <ParametersSub name="Instance" value="DMA1_Channel1"/>
+            <ParametersSub name="Mode" value="TRUE"/>
+        </USART1_RX>
+        <USART1_TX>
+            <ParametersSub name="Instance" value="DMA1_Channel2"/>
+        </USART1_TX>
+    </DMA>
+    <NVIC>
+        <PendSV_Handler>1;15;0;1;0</PendSV_Handler>
+        <SysTick_Handler>1;15;0;1;0</SysTick_Handler>
+        <FLASH_IRQHandler>0;5;0;1;0</FLASH_IRQHandler>
+        <CRM_IRQHandler>0;5;0;1;0</CRM_IRQHandler>
+        <DMA1_Channel1_IRQHandler>0;5;0;1;0</DMA1_Channel1_IRQHandler>
+        <DMA1_Channel3_2_IRQHandler>0;5;0;1;0</DMA1_Channel3_2_IRQHandler>
+        <ADC1_IRQHandler>0;5;0;1;0</ADC1_IRQHandler>
+        <TMR1_BRK_OVF_TRG_HALL_IRQHandler>0;5;0;1;0</TMR1_BRK_OVF_TRG_HALL_IRQHandler>
+        <TMR1_CH_IRQHandler>0;5;0;1;0</TMR1_CH_IRQHandler>
+        <TMR2_GLOBAL_IRQHandler>0;5;0;1;0</TMR2_GLOBAL_IRQHandler>
+        <TMR17_GLOBAL_IRQHandler>1;5;0;1;0</TMR17_GLOBAL_IRQHandler>
+        <USART1_IRQHandler>0;5;0;1;0</USART1_IRQHandler>
+        <USART2_IRQHandler>0;5;0;1;0</USART2_IRQHandler>
+    </NVIC>
+    <GPIO>
+        <Signal SignalName="GPIO_Output" PinName="PC13">
+            <Parameters name="Label" value="COOLER"/>
+        </Signal>
+        <Signal SignalName="GPIO_Output" PinName="PC14">
+            <Parameters name="Label" value="FAN_GROUP"/>
+        </Signal>
+        <Signal SignalName="GPIO_Output" PinName="PC15">
+            <Parameters name="Label" value="FAN_CTL"/>
+        </Signal>
+        <Signal SignalName="TMR2_CH1" PinName="PA5">
+            <Parameters name="Label" value="BEEP_PWM"/>
+        </Signal>
+        <Signal SignalName="ADC1_IN6" PinName="PA6">
+            <Parameters name="Label" value="ADC_DET24V"/>
+        </Signal>
+        <Signal SignalName="ADC1_IN8" PinName="PB0">
+            <Parameters name="Label" value="ADC_TEMP"/>
+        </Signal>
+        <Signal SignalName="ADC1_IN9" PinName="PB1">
+            <Parameters name="Label" value="ADC_WATER"/>
+        </Signal>
+        <Signal SignalName="TMR1_CH1" PinName="PA8">
+            <Parameters name="Label" value="ULTR_PWM"/>
+        </Signal>
+        <Signal SignalName="GPIO_Output" PinName="PB6">
+            <Parameters name="Label" value="PLASMA"/>
+        </Signal>
+    </GPIO>
+    <ClockConfiguration>
+        <rtcsel>0</rtcsel>
+        <hext>8.000000</hext>
+        <pllhextdiv>0</pllhextdiv>
+        <pllrcs>1</pllrcs>
+        <pllmode>0</pllmode>
+        <pllmult>24</pllmult>
+        <pllms>1</pllms>
+        <pllns>96</pllns>
+        <pllfr>8</pllfr>
+        <sclkselect>1</sclkselect>
+        <ahbdiv>1</ahbdiv>
+        <apb1div>1</apb1div>
+        <apb2div>1</apb2div>
+        <usbdiv>2.0</usbdiv>
+        <hicktousb>1</hicktousb>
+        <hicktosclk>0</hicktosclk>
+        <clkout>0</clkout>
+        <clkoutdiv>1</clkoutdiv>
+        <adcdiv>4</adcdiv>
+        <systicsel>1</systicsel>
+    </ClockConfiguration>
+    <PINInfo>
+        <PinSub pinname="PC13" signalname="GPIO_Output" signaltype="3"/>
+        <PinSub pinname="PC14" signalname="GPIO_Output" signaltype="3"/>
+        <PinSub pinname="PC15" signalname="GPIO_Output" signaltype="3"/>
+        <PinSub pinname="PA2" signalname="USART2_TX" signaltype="3"/>
+        <PinSub pinname="PA3" signalname="USART2_RX" signaltype="3"/>
+        <PinSub pinname="PA5" signalname="TMR2_CH1" signaltype="3"/>
+        <PinSub pinname="PA6" signalname="ADC1_IN6" signaltype="3"/>
+        <PinSub pinname="PB0" signalname="ADC1_IN8" signaltype="3"/>
+        <PinSub pinname="PB1" signalname="ADC1_IN9" signaltype="3"/>
+        <PinSub pinname="PA8" signalname="TMR1_CH1" signaltype="3"/>
+        <PinSub pinname="PA9" signalname="USART1_TX" signaltype="3"/>
+        <PinSub pinname="PA10" signalname="USART1_RX" signaltype="3"/>
+        <PinSub pinname="PA13" signalname="DEBUG_SWDIO" signaltype="2"/>
+        <PinSub pinname="PA14" signalname="DEBUG_SWCLK" signaltype="2"/>
+        <PinSub pinname="PB6" signalname="GPIO_Output" signaltype="3"/>
+    </PINInfo>
+    <ProjectInfomation>
+        <ProjectName>AT32F425C8T7_WorkBench</ProjectName>
+        <ProjectLocation>G:/Engineering_makeupCabinet_software_files/MakeupCabinet_mainBoard_Codes</ProjectLocation>
+        <ToolchainIDE>MDK_V5</ToolchainIDE>
+        <ARMCompiler>0</ARMCompiler>
+        <KeepUserCode>true</KeepUserCode>
+        <NotUsedPinAnalog>false</NotUsedPinAnalog>
+        <CodeSplitIP>true</CodeSplitIP>
+        <AddNecessaryFileFlag>true</AddNecessaryFileFlag>
+        <MinHeapSize>0x200</MinHeapSize>
+        <MinStackSize>0x400</MinStackSize>
+        <UseFirmware>true</UseFirmware>
+        <PackageVersion>V2.1.3</PackageVersion>
+    </ProjectInfomation>
+</Root>
