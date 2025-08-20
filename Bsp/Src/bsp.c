@@ -4,13 +4,11 @@ PROCESS_TYPEDEF g_pro;
 
 void bsp_init(void)
 {
-    // Initialize the process structure
-    g_pro.rx_length = 0;
-    g_pro.rx_complete_flag = 0;
-
-    // Initialize other BSP components
- 
     
-    // Additional initialization code can be added here
+#if(Enable_EventRecorder == 1) 
+	/* ³õÊ¼»¯EventRecorder²¢¿ªÆô */
+	EventRecorderInitialize(EventRecordAll, 1U);
+	EventRecorderStart();
+#endif
 }
 

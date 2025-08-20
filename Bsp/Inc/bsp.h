@@ -35,8 +35,31 @@
 #include "bsp_cooler.h"
 #include "bsp_buzzer.h"
 #include "bsp_fan.h"
+#include "bsp_freertos.h"
 
 #include "interrupt_manager.h"
+
+#define  USE_FreeRTOS      1
+
+
+#if USE_FreeRTOS == 1
+	#define DISABLE_INT()    taskENTER_CRITICAL()
+	#define ENABLE_INT()     taskEXIT_CRITICAL()
+#else
+	/* ??????????l? */
+	#define ENABLE_INT()	__set_PRIMASK(0)	/* '???????? */
+	#define DISABLE_INT()	__set_PRIMASK(1)	/* ????????? */
+#endif
+
+/* Ä¬ÈÏÊÇ¹Ø±Õ×´Ì¬ */
+#define  Enable_EventRecorder  1
+
+#if Enable_EventRecorder == 1
+	#include "EventRecorder.h"
+#endif
+
+
+	
 
 
 typedef struct _PROCESS_T{

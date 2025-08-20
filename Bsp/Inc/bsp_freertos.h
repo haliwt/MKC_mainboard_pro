@@ -5,7 +5,7 @@
 
 
 
-void freeRTOS_Handler(void);
+void freertos_handler(void);
 
 
 

@@ -143,7 +143,7 @@ int main(void)
  // wk_freertos_init();
 
   /* add user code begin 2 */
-    freeRTOS_Handler();
+    freertos_handler();
   /* add user code end 2 */
 
   while(1)
