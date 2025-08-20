@@ -1,6 +1,7 @@
 #ifndef __BSP_H
 #define __BSP_H
-#include "at32f425_wk_config.h"
+#include "at32f425.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -35,18 +36,21 @@
 #include "bsp_buzzer.h"
 #include "bsp_fan.h"
 
-
-
-
-
 #include "interrupt_manager.h"
 
 
+typedef struct _PROCESS_T{
+
+  uint8_t rx_length; //接收数据长度
+  uint8_t rx_complete_flag; //接收完成标志 
+
+
+}PROCESS_TYPEDEF;
+extern PROCESS_TYPEDEF g_pro;
 
 
 
-
-
+void bsp_init(void);
 
 
 #endif 

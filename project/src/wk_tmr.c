@@ -39,7 +39,7 @@
 void wk_tmr1_init(void)
 {
   /* add user code begin tmr1_init 0 */
-
+  // ultrasonic is pwm is 25KHZ
   /* add user code end tmr1_init 0 */
 
   gpio_init_type gpio_init_struct;
@@ -116,7 +116,7 @@ void wk_tmr1_init(void)
 void wk_tmr2_init(void)
 {
   /* add user code begin tmr2_init 0 */
-
+   //Buzzer sound frequency is 4KHZ
   /* add user code end tmr2_init 0 */
 
   gpio_init_type gpio_init_struct;

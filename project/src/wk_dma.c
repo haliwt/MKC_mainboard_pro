@@ -28,7 +28,7 @@
 #include "wk_dma.h"
 
 /* add user code begin 0 */
-
+#include "bsp.h"
 /* add user code end 0 */
 
 /**
@@ -51,14 +51,36 @@ void wk_dma1_channel1_init(void)
   dma_init_struct.memory_inc_enable = TRUE;
   dma_init_struct.peripheral_data_width = DMA_PERIPHERAL_DATA_WIDTH_BYTE;
   dma_init_struct.peripheral_inc_enable = FALSE;
-  dma_init_struct.priority = DMA_PRIORITY_LOW;
-  dma_init_struct.loop_mode_enable = TRUE;
+  dma_init_struct.priority = DMA_PRIORITY_VERY_HIGH;//DMA_PRIORITY_LOW;
+  dma_init_struct.loop_mode_enable = TRUE;// 循环模式
+  
+
+  //配置接收参数 Need menual config
+  dma_init_struct.buffer_size            = RX_BUFFER_SIZE;
+  dma_init_struct.peripheral_base_addr   = (uint32_t)&USART1->dt;
+  dma_init_struct.memory_base_addr       = (uint32_t)rx_buf;
+
+  /***********************************/
   dma_init(DMA1_CHANNEL1, &dma_init_struct);
 	
   /* flexible function enable */
   dma_flexible_config(DMA1, FLEX_CHANNEL1, DMA_FLEXIBLE_UART1_RX);
+  /**
+   * Users need to configure DMA1 interrupt functions according to the actual application.
+   * 1. Call the below function to enable the corresponding DMA1 interrupt.
+   *     --dma_interrupt_enable(...)
+   * 2. Add the user's interrupt handler code into the below function in the at32f425_int.c file.
+   *     --void DMA1_Channel1_IRQHandler(void)
+   */ 
   /* add user code begin dma1_channel1 1 */
-
+   
+   
+   // dma_init_struct.buffer_size            = RX_BUFFER_SIZE;
+   // dma_init_struct.peripheral_base_addr   = (uint32_t)&USART1->dt;
+   // dma_init_struct.memory_base_addr       = (uint32_t)rx_buf;
+   
+   
+   
   /* add user code end dma1_channel1 1 */
 }
 
@@ -88,6 +110,13 @@ void wk_dma1_channel2_init(void)
 	
   /* flexible function enable */
   dma_flexible_config(DMA1, FLEX_CHANNEL2, DMA_FLEXIBLE_UART1_TX);
+  /**
+   * Users need to configure DMA1 interrupt functions according to the actual application.
+   * 1. Call the below function to enable the corresponding DMA1 interrupt.
+   *     --dma_interrupt_enable(...)
+   * 2. Add the user's interrupt handler code into the below function in the at32f425_int.c file.
+   *     --void DMA1_Channel3_2_IRQHandler(void)
+   */ 
   /* add user code begin dma1_channel2 1 */
 
   /* add user code end dma1_channel2 1 */
@@ -119,6 +148,13 @@ void wk_dma1_channel3_init(void)
 	
   /* flexible function enable */
   dma_flexible_config(DMA1, FLEX_CHANNEL3, DMA_FLEXIBLE_ADC1);
+  /**
+   * Users need to configure DMA1 interrupt functions according to the actual application.
+   * 1. Call the below function to enable the corresponding DMA1 interrupt.
+   *     --dma_interrupt_enable(...)
+   * 2. Add the user's interrupt handler code into the below function in the at32f425_int.c file.
+   *     --void DMA1_Channel3_2_IRQHandler(void)
+   */ 
   /* add user code begin dma1_channel3 1 */
 
   /* add user code end dma1_channel3 1 */

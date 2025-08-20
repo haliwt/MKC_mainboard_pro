@@ -116,14 +116,14 @@
         <SysTick_Handler>1;15;0;1;0</SysTick_Handler>
         <FLASH_IRQHandler>0;5;0;1;0</FLASH_IRQHandler>
         <CRM_IRQHandler>0;5;0;1;0</CRM_IRQHandler>
-        <DMA1_Channel1_IRQHandler>0;5;0;1;0</DMA1_Channel1_IRQHandler>
-        <DMA1_Channel3_2_IRQHandler>0;5;0;1;0</DMA1_Channel3_2_IRQHandler>
+        <DMA1_Channel1_IRQHandler>1;5;0;1;0</DMA1_Channel1_IRQHandler>
+        <DMA1_Channel3_2_IRQHandler>1;5;0;1;0</DMA1_Channel3_2_IRQHandler>
         <ADC1_IRQHandler>0;5;0;1;0</ADC1_IRQHandler>
         <TMR1_BRK_OVF_TRG_HALL_IRQHandler>0;5;0;1;0</TMR1_BRK_OVF_TRG_HALL_IRQHandler>
         <TMR1_CH_IRQHandler>0;5;0;1;0</TMR1_CH_IRQHandler>
         <TMR2_GLOBAL_IRQHandler>0;5;0;1;0</TMR2_GLOBAL_IRQHandler>
         <TMR17_GLOBAL_IRQHandler>1;5;0;1;0</TMR17_GLOBAL_IRQHandler>
-        <USART1_IRQHandler>0;5;0;1;0</USART1_IRQHandler>
+        <USART1_IRQHandler>1;5;0;1;0</USART1_IRQHandler>
         <USART2_IRQHandler>0;5;0;1;0</USART2_IRQHandler>
     </NVIC>
     <GPIO>

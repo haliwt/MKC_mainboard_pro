@@ -31,7 +31,7 @@
 #include "wk_usart.h"
 #include "wk_dma.h"
 #include "wk_gpio.h"
-//#include "freertos_app.h"
+#include "freertos_app.h"
 
 /* private includes ----------------------------------------------------------*/
 /* add user code begin private includes */
@@ -140,7 +140,7 @@ int main(void)
   wk_tmr17_init();
 
   /* init freertos function. */
-  //wk_freertos_init();
+ // wk_freertos_init();
 
   /* add user code begin 2 */
     freeRTOS_Handler();

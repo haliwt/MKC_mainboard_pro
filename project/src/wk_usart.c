@@ -79,6 +79,14 @@ void wk_usart1_init(void)
 
   usart_hardware_flow_control_set(USART1, USART_HARDWARE_FLOW_NONE);
 
+  /**
+   * Users need to configure USART1 interrupt functions according to the actual application.
+   * 1. Call the below function to enable the corresponding USART1 interrupt.
+   *     --usart_interrupt_enable(...)
+   * 2. Add the user's interrupt handler code into the below function in the at32f425_int.c file.
+   *     --void USART1_IRQHandler(void)
+   */
+
   /* add user code begin usart1_init 2 */
 
   /* add user code end usart1_init 2 */
@@ -86,7 +94,8 @@ void wk_usart1_init(void)
   usart_enable(USART1, TRUE);
 
   /* add user code begin usart1_init 3 */
-
+  // 开 IDLE 中断（不定长分帧关键）
+   usart_interrupt_enable(USART1, USART_IDLE_INT, TRUE);
   /* add user code end usart1_init 3 */
 }
 

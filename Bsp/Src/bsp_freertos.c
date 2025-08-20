@@ -5,22 +5,22 @@
 #define DECODER_BIT_0        (1<< 0)
 
 /***********************************************************************************************************
-											鍑芥暟澹版槑
+											靑芥暟澹版槑
 ***********************************************************************************************************/
-static void vTaskWifiPro(void *pvParameters);
+//static void vTaskWifiPro(void *pvParameters);
 static void vTaskMsgPro(void *pvParameters);
 static void vTaskStart(void *pvParameters);
 static void AppTaskCreate (void);
 
 
-/* 鍒涘缓浠诲姟閫氫俊鏈哄埗 */
+/* 青涘缓浠诲姟閫氫俊靈哄埗 */
 //static void AppObjCreate(void);
 
 
 /***********************************************************************************************************
-											鍙橀噺澹版槑
+											静橀噺澹版槑
 ***********************************************************************************************************/
-static TaskHandle_t xHandleTaskWifiPro = NULL;
+//static TaskHandle_t xHandleTaskWifiPro = NULL;
 static TaskHandle_t xHandleTaskMsgPro = NULL;
 static TaskHandle_t xHandleTaskStart = NULL;
 #define LOWEST_PRIORITY   1  // ???????
@@ -35,8 +35,8 @@ typedef struct Msg
 
 MSG_T   gl_tMsg; /* ?????????????? */
 
-uint8_t txBuf[] ={0x0A,0x0B,0x0C,0x0d};
-uint8_t  txLen = 4;//sizeof(txBuf) - 1; // Exclude null terminator
+
+
 
 
 /**********************************************************************************************************
@@ -48,56 +48,57 @@ uint8_t  txLen = 4;//sizeof(txBuf) - 1; // Exclude null terminator
 **********************************************************************************************************/
 void freeRTOS_Handler(void)
 {
-     /* 鍒涘缓浠诲姟 */
+     /* 青涘缓浠诲姟 */
 	  AppTaskCreate();
 	  
-	  /* 鍒涘缓浠诲姟閫氫俊鏈哄埗 */
+	  /* 青涘缓浠诲姟閫氫俊靈哄埗 */
 //	   AppObjCreate();
 	  
-	  /* 鍚姩璋冨害锛屽紑濮嬫墽琛屼换锟?1锄1�71�1�77?7?1锄1�71�1�77?1锄1�71�1�77?7?7 */
+	  /* 靚姩璋冨害锛屽紑濮嬫墽睛屼杢锟?1锄1�71�1�77?7?1锄1�71�1�77?1锄1�71�1�77?7?7 */
 	   vTaskStartScheduler();
 
 
 }
 
-/**********************************************************************************************************
-*	Function Name: vTaskStart
-*	鍔熻兘璇存槑: 鍚姩浠诲姟锛屼篃灏辨槸鏈拄1�71�1�771锄1�71�1�77?7楂樹紭鍏堢骇浠诲姟锛岃繖閲岀敤浣滄寜閿壂鎻忥拷1锄1�71�1�77?7锄1�71�1�77?1锄1�71�1�77?7?1锄1�71�1�77?1锄1�71�1�77?7?7
-*	锄1�71�1�77?1锄1�71�1�77?7?1锄1�71�1�77?1锄1�71�1�77?7?7    锄1�71�1�77?1锄1�71�1�77?7?1锄1�71�1�77?1锄1�71�1�77?7?7: pvParameters 鏄湪鍒涘缓璇ヤ换鍔℃椂浼狅拄1�71�1�771锄1�71�1�77?7锄1�71�1�77?1锄1�71�1�77?7鐨勫舰鍙?
-*	锄1�71�1�77?1锄1�71�1�77?7?1锄1�71�1�77?1锄1�71�1�77?7?7 锄1�71�1�77?1锄1�71�1�77?7?1锄1�71�1�77?1锄1�71�1�77?7?7 锄1�71�1�77?1锄1�71�1�77?7?1锄1�71�1�77?1锄1�71�1�77?7?7: 锄1�71�1�77?1锄1�71�1�77?7?1锄1�71�1�77?1锄1�71�1�77?7?7
-*   锄1�71�1�77?1锄1�71�1�77?7?1锄1�71�1�77?1锄1�71�1�77?7?7 锄1�71�1�77?1锄1�71�1�77?7?1锄1�71�1�77?1锄1�71�1�77?7?7 锄1�71�1�77?1锄1�71�1�77?7?1锄1�71�1�77?1锄1�71�1�77?7?7: 4  (鏁帮拄1�71�1�771锄1�71�1�77?7锄1�71�1�77?1锄1�71�1�77?7瓒婂皬浼樺厛绾ц秺浣庯紝杩欎釜璺焨COS鐩�6�0弄1�71�1�77)
-************************************ifi**********************************************************************/
- static void vTaskWifiPro(void *pvParameters)
- {
+// /**********************************************************************************************************
+//  * 
+// *	Function Name: vTaskStart
+// *	Function : only one freeRTOS task 
+// *	Input Ref:NO
+// *	Return Ref:NO
+// *   
+// ************************************ifi**********************************************************************/
+//  static void vTaskWifiPro(void *pvParameters)
+//  {
   
-      while(1)
-      {
+//       while(1)
+//       {
        
-        vTaskDelay(pdMS_TO_TICKS(1000));
-     }
+//         vTaskDelay(pdMS_TO_TICKS(1000));
+//      }
 
 
- }
+//  }
 
 /**
- * @brief  :  static void vTaskStart(void *pvParameters)创建数据处理任务，优先级为中筄1�71�1�77
- * @note    任务内部使用队列接收数据，需先初始化队列
+ * @brief  :  static void vTaskStart(void *pvParameters)创建数杮处睆任务，优先级为中筄1�71�1�77
+ * @note    任务内部使用队列接收数杮，需先初始化队列
  * @param   None
  * @retval  None
  */
 static void vTaskMsgPro(void *pvParameters)
 {
   while(1)
-    {
-   
-			vTaskDelay(pdMS_TO_TICKS(10));
+  {
+      fan_singal_open();
+			vTaskDelay(pdMS_TO_TICKS(50));
 				                                   
  	}
 }	
 
 /**
- * @brief  :  static void vTaskStart(void *pvParameters)创建数据处理任务，优先级为中筄1�71�1�77
- * @note    任务内部使用队列接收数据，需先初始化队列
+ * @brief  :  static void vTaskStart(void *pvParameters)
+ * @note    任务内部使用队列接收数杮，需先初始化队列
  * @param   None
  * @retval  None
  */
@@ -105,96 +106,49 @@ static void vTaskStart(void *pvParameters)
 {
     
 	while(1)
-    {
-  
-  
+  {
+     
+      usart1_dma_rx_process();
 			vTaskDelay(pdMS_TO_TICKS(10));
        
-    }
+  }
  }
        
 
   
 /**
- * @brief  :  void AppTaskCreate (void)建数据处理任务，优先级为中等
- * @note    任务内部使用队列接收数据，需先初始化队列
+ * @brief  :  void AppTaskCreate (void)建数杮处睆任务，优先级为中等
+ * @note    任务内部使用队列接收数杮，需先初始化队列
  * @param   None
  * @retval  None
  */
 void AppTaskCreate (void)
 {
-   xTaskCreate( vTaskWifiPro,     		/* 浠诲姟鍑芥暟  */
-                 "vTaskWifiPro",   		/* 浠诲姟锟?1锄1�71�1�77?7?1锄1�71�1�77?1锄1�71�1�77?7?7    */
-                 128,            		/* 浠诲姟鏍堝ぇ灏忥紝鍗曚綅word锛屼篃灏辨槸4瀛楄妄1�71�1�77 */
-                 NULL,           		/* 浠诲姟鍙傛暟  */
-                 3,              		/* 浠诲姟浼樺厛锄1�71�1�77?1锄1�71�1�77?7?1锄1�71�1�77?1锄1�71�1�77?7?7 鏁帮拄1�71�1�771锄1�71�1�77?7锄1�71�1�77?1锄1�71�1�77?7瓒婂皬浼樺厛绾ц秺浣庯紝杩欎釜璺焨COS鐩�6�0弄1�71�1�77 */
-                 &xHandleTaskWifiPro);   /* 浠诲姟鍙ユ焺  */
+  //  xTaskCreate( vTaskWifiPro,     		/* 浠诲姟靑芥暟  */
+  //                "vTaskWifiPro",   		/* 浠诲姟锟?1锄1�71�1�77?7?1锄1�71�1�77?1锄1�71�1�77?7?7    */
+  //                128,            		/* 浠诲姟靝堝㝇睝忥紝靗曚綅word锛屼篃睝辨槸4瀛楄妄1�71�1�77 */
+  //                NULL,           		/* 浠诲姟静傛暟  */
+  //                3,              		/* 浠诲姟浼樺厛锄1�71�1�77?1锄1�71�1�77?7?1锄1�71�1�77?1锄1�71�1�77?7?7 靝帮拄1�71�1�771锄1�71�1�77?7锄1�71�1�77?1锄1�71�1�77?7瓒婂皬浼樺厛绾ц秺浣庯紝杩欎釜璺焨COS革�6�0弄1�71�1�77 */
+  //                &xHandleTaskWifiPro);   /* 浠诲姟静ユ焺  */
  
-  xTaskCreate( vTaskMsgPro,     		/* 浠诲姟鍑芥暟  */
-                 "vTaskMsgPro",   		/* 浠诲姟锟?1锄1�71�1�77?7?1锄1�71�1�77?1锄1�71�1�77?7?7    */
-                 128,            		/* 浠诲姟鏍堝ぇ灏忥紝鍗曚綅word锛屼篃灏辨槸4瀛楄妄1�71�1�77 */
-                 NULL,           		/* 浠诲姟鍙傛暟  */
-                 1,              		/* 浠诲姟浼樺厛锄1�71�1�77?1锄1�71�1�77?7?1锄1�71�1�77?1锄1�71�1�77?7?7 鏁帮拄1�71�1�771锄1�71�1�77?7锄1�71�1�77?1锄1�71�1�77?7瓒婂皬浼樺厛绾ц秺浣庯紝杩欎釜璺焨COS鐩�6�0弄1�71�1�77 */
-                 &xHandleTaskMsgPro);   /* 浠诲姟鍙ユ焺  */
+  xTaskCreate( vTaskMsgPro,     		/* 浠诲姟靑芥暟  */
+                 "vTaskMsgPro",   		/* 浠诲姟锟?1锄1�71�1�77?7?1锄1�71�1�77?1锄1�71�1�77?7?7    */
+                 128,            		/* 浠诲姟靝堝㝇睝忥紝靗曚綅word锛屼篃睝辨槸4瀛楄妄1�71�1�77 */
+                 NULL,           		/* 浠诲姟静傛暟  */
+                 1,              		/* 浠诲姟浼樺厛锄1�71�1�77?1锄1�71�1�77?7?1锄1�71�1�77?1锄1�71�1�77?7?7 靝帮拄1�71�1�771锄1�71�1�77?7锄1�71�1�77?1锄1�71�1�77?7瓒婂皬浼樺厛绾ц秺浣庯紝杩欎釜璺焨COS革�6�0弄1�71�1�77 */
+                 &xHandleTaskMsgPro);   /* 浠诲姟静ユ焺  */
 
 
-   xTaskCreate( vTaskStart,     		/* 浠诲姟鍑芥暟  */
-                 "vTaskStart",   		/* 浠诲姟锟?1锄1�71�1�77?7?1锄1�71�1�77?1锄1�71�1�77?7?7    */
-                 128,            		/* 浠诲姟鏍堝ぇ灏忥紝鍗曚綅word锛屼篃灏辨槸4瀛楄妄1�71�1�77 */
-                 NULL,           		/* 浠诲姟鍙傛暟  */
-                 2,              		/* 浠诲姟浼樺厛锄1�71�1�77?1锄1�71�1�77?7?1锄1�71�1�77?1锄1�71�1�77?7?7 鏁帮拄1�71�1�771锄1�71�1�77?7锄1�71�1�77?1锄1�71�1�77?7瓒婂皬浼樺厛绾ц秺浣庯紝杩欎釜璺焨COS鐩�6�0弄1�71�1�77 */
-                 &xHandleTaskStart );   /* 浠诲姟鍙ユ焺  */
+   xTaskCreate( vTaskStart,     		/* 浠诲姟靑芥暟  */
+                 "vTaskStart",   		/* 浠诲姟锟?1锄1�71�1�77?7?1锄1�71�1�77?1锄1�71�1�77?7?7    */
+                 128,            		/* 浠诲姟靝堝㝇睝忥紝靗曚綅word锛屼篃睝辨槸4瀛楄妄1�71�1�77 */
+                 NULL,           		/* 浠诲姟静傛暟  */
+                 2,              		/* 浠诲姟浼樺厛锄1�71�1�77?1锄1�71�1�77?7?1锄1�71�1�77?1锄1�71�1�77?7?7 靝帮拄1�71�1�771锄1�71�1�77?7锄1�71�1�77?1锄1�71�1�77?7瓒婂皬浼樺厛绾ц秺浣庯紝杩欎釜璺焨COS革�6�0弄1�71�1�77 */
+                 &xHandleTaskStart );   /* 浠诲姟静ユ焺  */
 }
 
 
-/********************************************************************************
-	**
-	*Function Name:void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-	*Function :UART callback function  for UART interrupt for receive data
-	*Input Ref: structure UART_HandleTypeDef pointer
-	*Return Ref:NO
-	*
-*******************************************************************************/
-//void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-//{
-//     
-//     BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-//   //  MSG_T *ptMsg;
 
-//    if(huart->Instance==USART2)
-//    {
-//	
-// 
-//	
-//     //  ENABLE_INT();
-//	  __HAL_UART_CLEAR_OREFLAG(&huart2);
-//      //HAL_UART_Receive_IT(&huart2,wifi_rx_inputBuf,1);
-//	}
-//    else if(huart->Instance==USART1)//if(huart==&huart1) // Motor Board receive data (filter)
-//	{
-//     
-//		}
-
-//      //  ENABLE_INT();
-//	    __HAL_UART_CLEAR_OREFLAG(&huart1);
-//		//HAL_UART_Receive_IT(&huart1,inputBuf,1);//UART receive data interrupt 1 byte
-//		
-//	 }
-//    
-//    
-//  
-// }
-
-
-//void freertos_set_prority(void)
-//{
-//	
-//	vTaskPrioritySet(xHandleTaskStart, LOWEST_PRIORITY);  // ???????
-//	taskYIELD();  // ??????
-//	vTaskPrioritySet(xHandleTaskMsgPro,HIGHEST_PRIORITY);  // ???????
-
-//   
-//} 
 
 
 

@@ -29,7 +29,7 @@
 
 /* private includes ----------------------------------------------------------*/
 /* add user code begin private includes */
-
+#include "bsp.h"
 /* add user code end private includes */
 
 /* private typedef -----------------------------------------------------------*/
@@ -204,6 +204,42 @@ void SysTick_Handler(void)
 }
 
 /**
+  * @brief  this function handles DMA1 Channel 1 handler.
+  * @param  none
+  * @retval none
+  */
+void DMA1_Channel1_IRQHandler(void)
+{
+  /* add user code begin DMA1_Channel1_IRQ 0 */
+  //USART1 TX DMA CHANNEL 
+  if(dma_interrupt_flag_get(DMA1_FDT1_FLAG))//Full Data Transfer Flag
+  {
+      dma_flag_clear(DMA1_FDT1_FLAG);
+   
+  }
+
+  /* add user code end DMA1_Channel1_IRQ 0 */
+  /* add user code begin DMA1_Channel1_IRQ 1 */
+
+  /* add user code end DMA1_Channel1_IRQ 1 */
+}
+
+/**
+  * @brief  this function handles DMA1 Channel 3 & 2 handler.
+  * @param  none
+  * @retval none
+  */
+void DMA1_Channel3_2_IRQHandler(void)
+{
+  /* add user code begin DMA1_Channel3_2_IRQ 0 */
+
+  /* add user code end DMA1_Channel3_2_IRQ 0 */
+  /* add user code begin DMA1_Channel3_2_IRQ 1 */
+
+  /* add user code end DMA1_Channel3_2_IRQ 1 */
+}
+
+/**
   * @brief  this function handles TMR17 handler.
   * @param  none
   * @retval none
@@ -211,13 +247,55 @@ void SysTick_Handler(void)
 void TMR17_GLOBAL_IRQHandler(void)
 {
   /* add user code begin TMR17_GLOBAL_IRQ 0 */
-
+  if(tmr_interrupt_flag_get(TMR17, TMR_OVF_FLAG) != RESET)
+  {
+    /* add user code... */
+    
+    tmr_flag_clear(TMR17, TMR_OVF_FLAG);
+	tim17_callback_handler();
+  }
   /* add user code end TMR17_GLOBAL_IRQ 0 */
 
 
   /* add user code begin TMR17_GLOBAL_IRQ 1 */
 
   /* add user code end TMR17_GLOBAL_IRQ 1 */
+}
+
+/**
+  * @brief  this function handles USART1 handler.
+  * @param  none
+  * @retval none
+  */
+void USART1_IRQHandler(void)
+{
+  /* add user code begin USART1_IRQ 0 */
+  // 检测空闲中断
+     volatile uint32_t tmp;
+    if(usart_flag_get(USART1, USART_IDLEF_FLAG) != RESET)
+    {
+       // 按顺序读 STS 和 DR 清 IDLE 标志
+       
+        // tmp = USART1->sts;
+        // tmp = USART1->dt;
+        // (void)tmp;
+        // 清除空闲中断标志
+        (void)USART1->sts;  // 清标志
+        (void)USART1->dt;
+        
+
+        // 计算接收到的数据长度
+        //g_pro.rx_usart1_length = RX_BUFFER_SIZE - dma_data_number_get(DMA1_CHANNEL1);
+        
+        // 设置接收完成标志
+        //g_pro.rx_usart1_complete_flag = 1;
+        usart1_irq_callback_handler();
+       
+    }
+  /* add user code end USART1_IRQ 0 */
+  /* add user code begin USART1_IRQ 1 */
+
+  /* add user code end USART1_IRQ 1 */
 }
 
 /* add user code begin 1 */
