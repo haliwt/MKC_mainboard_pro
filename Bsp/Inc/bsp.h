@@ -65,7 +65,10 @@
 typedef struct _PROCESS_T{
 
   uint8_t rx_length; //接收数据长度
-  uint8_t rx_complete_flag; //接收完成标志 
+  uint8_t rx_complete_flag; //接收完成标志
+  
+  //timer param 
+   uint8_t gTimer_1s_flag; //1s flag
 
 
 }PROCESS_TYPEDEF;

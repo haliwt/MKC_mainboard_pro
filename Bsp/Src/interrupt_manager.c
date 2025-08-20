@@ -11,8 +11,8 @@ void tim17_callback_handler(void)
 	if(tim17_counter >999){
 
 	   tim17_counter=0;
-
-
+        
+	   g_pro.gTimer_1s_flag ++;
 	}
 
 

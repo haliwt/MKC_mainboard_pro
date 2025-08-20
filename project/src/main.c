@@ -143,6 +143,7 @@ int main(void)
  // wk_freertos_init();
 
   /* add user code begin 2 */
+    tmr_counter_enable(TMR17, TRUE);
     freertos_handler();
   /* add user code end 2 */
 
