@@ -4,7 +4,7 @@
 
 #define FRAME_MAX_LEN  20
 
-volatile uint8_t rx_buf[RX_BUFFER_SIZE];
+volatile uint8_t dma_rx_buf[RX_BUFFER_SIZE];
 
 
 
@@ -14,7 +14,7 @@ typedef struct {
 } seg_t;
 
 
-static uint8_t  g_frame[FRAME_MAX_LEN];
+uint8_t  g_frame[FRAME_MAX_LEN];
 static uint8_t g_frame_len = 0;
 static volatile seg_t seg_q[SEG_Q_SIZE];
 static volatile uint8_t seg_q_head = 0, seg_q_tail = 0;
@@ -91,25 +91,20 @@ void usart1_irq_callback_handler(void)
  */
 static void rx_process_chunk(const uint8_t *data, uint16_t len)
 {
-    uint8_t space ;
-	if (!len) return;
+    if (!len) return;
 
-    if (len >= FRAME_MAX_LEN) {
-        memcpy(g_frame, data + (len - FRAME_MAX_LEN), FRAME_MAX_LEN);
-        g_frame_len = FRAME_MAX_LEN;
-        return;
+    // 限长防护
+    if (len > FRAME_MAX_LEN) {
+        len = FRAME_MAX_LEN;
     }
 
-    space = FRAME_MAX_LEN - g_frame_len;
-    if (len <= space) {
-        memcpy(&g_frame[g_frame_len], data, len);
-        g_frame_len += len;
-    } else {
-        uint16_t shift = len - space;
-        memmove(g_frame, g_frame + shift, g_frame_len - shift);
-        memcpy(&g_frame[g_frame_len - shift], data, len);
-        g_frame_len = FRAME_MAX_LEN;
-    }
+    // 覆盖模式：直接从 g_frame[0] 开始拷贝本帧
+    memcpy(g_frame, data, len);
+
+    // 记录本帧长度
+    g_frame_len   = len;
+   // g_frame_ready = 1;     // 标记本帧已就绪（可在主循环读取）
+    memset(g_frame + len, 0, FRAME_MAX_LEN - len); // 清理剩余部分
 }
 
 /**
@@ -125,7 +120,7 @@ void usart1_dma_rx_process(void)
         uint16_t len = seg_q[seg_q_tail].len;
 
         // 在这里做memcpy / 解析 / 覆盖模式拼帧
-        rx_process_chunk((const uint8_t*)&rx_buf[pos], len);
+        rx_process_chunk((const uint8_t*)&dma_rx_buf[pos], len);
 
         seg_q_tail = (seg_q_tail + 1) % SEG_Q_SIZE;
     }

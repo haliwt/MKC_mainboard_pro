@@ -35,6 +35,8 @@
 #include "bsp_cooler.h"
 #include "bsp_buzzer.h"
 #include "bsp_fan.h"
+#include "bsp_rxdma_usart.h"
+#include "bsp_txdma_usart.h"
 #include "bsp_freertos.h"
 
 #include "interrupt_manager.h"

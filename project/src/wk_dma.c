@@ -29,6 +29,9 @@
 
 /* add user code begin 0 */
 #include "bsp.h"
+
+
+
 /* add user code end 0 */
 
 /**
@@ -58,7 +61,7 @@ void wk_dma1_channel1_init(void)
   //配置接收参数 Need menual config
   dma_init_struct.buffer_size            = RX_BUFFER_SIZE;
   dma_init_struct.peripheral_base_addr   = (uint32_t)&USART1->dt;
-  dma_init_struct.memory_base_addr       = (uint32_t)rx_buf;
+  dma_init_struct.memory_base_addr       = (uint32_t)dma_rx_buf;
 
   /***********************************/
   dma_init(DMA1_CHANNEL1, &dma_init_struct);
@@ -75,9 +78,9 @@ void wk_dma1_channel1_init(void)
   /* add user code begin dma1_channel1 1 */
    
    
-   // dma_init_struct.buffer_size            = RX_BUFFER_SIZE;
+   // dma_init_struct.buffer_size            = dma_rx_bufFER_SIZE;
    // dma_init_struct.peripheral_base_addr   = (uint32_t)&USART1->dt;
-   // dma_init_struct.memory_base_addr       = (uint32_t)rx_buf;
+   // dma_init_struct.memory_base_addr       = (uint32_t)dma_rx_buf;
    
        // 使能DMA通道
     dma_channel_enable(DMA1_CHANNEL1, TRUE);
@@ -122,7 +125,22 @@ void wk_dma1_channel2_init(void)
    *     --void DMA1_Channel3_2_IRQHandler(void)
    */ 
   /* add user code begin dma1_channel2 1 */
+   /* 灵活映射到 USART1_TX */
+       
+    dma_init_struct.buffer_size           = 0; // 发送时再写
+   
+    dma_init_struct.memory_base_addr      = (uint32_t)dma_tx_buf;
+    
+   
+    dma_init_struct.peripheral_base_addr  = (uint32_t)&USART1->dt;
+    
+    dma_init_struct.priority              = DMA_PRIORITY_MEDIUM;
+    dma_init_struct.loop_mode_enable      = FALSE;
 
+    /* 启用 USART1 的 DMA 发送功能 */
+    usart_dma_transmitter_enable(USART1, TRUE);
+     /* 启动 DMA 发送 */
+    dma_channel_enable(DMA1_CHANNEL2, TRUE);
   /* add user code end dma1_channel2 1 */
 }
 

@@ -4,7 +4,7 @@
 
 #define RX_BUFFER_SIZE  20
 
-volatile extern uint8_t rx_buf[RX_BUFFER_SIZE];
+volatile extern uint8_t dma_rx_buf[RX_BUFFER_SIZE];
 
 void usart1_irq_callback_handler(void);
 

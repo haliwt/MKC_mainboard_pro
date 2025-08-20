@@ -212,11 +212,36 @@ void DMA1_Channel1_IRQHandler(void)
 {
   /* add user code begin DMA1_Channel1_IRQ 0 */
   //USART1 TX DMA CHANNEL 
-  if(dma_interrupt_flag_get(DMA1_FDT1_FLAG))//Full Data Transfer Flag
-  {
-      dma_flag_clear(DMA1_FDT1_FLAG);
-   
-  }
+   if (dma_flag_get(DMA1_FDT1_FLAG) != RESET)
+    {
+        dma_flag_clear(DMA1_FDT1_FLAG);
+       // uart1_rx.dma_half = 1;  // 前半缓冲数据可处理
+    }
+
+    if (dma_flag_get(DMA1_HDT1_FLAG) != RESET)
+    {
+        dma_flag_clear(DMA1_HDT1_FLAG);
+       // uart1_rx.dma_full = 1;  // 后半缓冲数据可处理
+    }
+
+    // 错误
+    if (dma_flag_get(DMA1_DTERR1_FLAG) != RESET) {
+        dma_flag_clear(DMA1_DTERR1_FLAG);
+        //handle_dma_error();
+          // 1. 先停掉 DMA 通道
+        dma_channel_enable(DMA1_CHANNEL1, FALSE);
+
+        // 2. 清除错误标志（以及传输标志，防止遗留）
+        dma_flag_clear(DMA1_DTERR1_FLAG);
+        dma_flag_clear(DMA1_HDT1_FLAG);
+        dma_flag_clear(DMA1_FDT1_FLAG);
+
+        // 3. 重新设置数据计数（如果环形模式，原配置可继续；否则需要 reload）
+        dma_data_number_set(DMA1_CHANNEL1,RX_BUFFER_SIZE);
+
+        // 4. 重新使能 DMA
+        dma_channel_enable(DMA1_CHANNEL1, TRUE);
+    }
 
   /* add user code end DMA1_Channel1_IRQ 0 */
   /* add user code begin DMA1_Channel1_IRQ 1 */
@@ -286,12 +311,12 @@ void USART1_IRQHandler(void)
         
 
         // 计算接收到的数据长度
-        //g_pro.rx_usart1_length = RX_BUFFER_SIZE - dma_data_number_get(DMA1_CHANNEL1);
+        //g_pro.rx_usart1_length = dma_rx_bufFER_SIZE - dma_data_number_get(DMA1_CHANNEL1);
         
         // 设置接收完成标志
         //g_pro.rx_usart1_complete_flag = 1;
-        usart1_irq_callback_handler();
-       
+       // usart1_irq_callback_handler();
+       usart1_irq_callback_process_rx();
     }
   /* add user code end USART1_IRQ 0 */
   /* add user code begin USART1_IRQ 1 */
