@@ -24,15 +24,15 @@ void usart1_dma_send(const uint8_t *data, uint16_t len)
     dma_init(DMA1_CHANNEL2, &dma_init_struct);
 
     // 3. 清标志
-   // dma_flag_clear(DMA1_FDT2_FLAG | DMA1_HDT2_FLAG | DMA1_DTERR2_FLAG);
+    dma_flag_clear(DMA1_FDT2_FLAG | DMA1_HDT2_FLAG | DMA1_DTERR2_FLAG);
 
     // 4. 开 USART1 DMA TX
-    dma_flexible_config(DMA1, FLEX_CHANNEL3, DMA_FLEXIBLE_UART1_TX);
+    dma_flexible_config(DMA1, FLEX_CHANNEL2, DMA_FLEXIBLE_UART1_TX);
 
     usart_dma_transmitter_enable(USART1, TRUE);
 
     // 5. 使能 DMA 通道
-    dma_channel_enable(DMA1_CHANNEL3, TRUE);
+    dma_channel_enable(DMA1_CHANNEL2, TRUE);
 
 //      // 关闭通道以便重新配置
 //     dma_channel_enable(DMA1_CHANNEL2, FALSE);
