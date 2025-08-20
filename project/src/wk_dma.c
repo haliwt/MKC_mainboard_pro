@@ -79,7 +79,11 @@ void wk_dma1_channel1_init(void)
    // dma_init_struct.peripheral_base_addr   = (uint32_t)&USART1->dt;
    // dma_init_struct.memory_base_addr       = (uint32_t)rx_buf;
    
-   
+       // 使能DMA通道
+    dma_channel_enable(DMA1_CHANNEL1, TRUE);
+    
+    // 使能USART1
+    usart_enable(USART1, TRUE);
    
   /* add user code end dma1_channel1 1 */
 }
