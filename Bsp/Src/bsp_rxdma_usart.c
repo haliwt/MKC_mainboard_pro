@@ -7,7 +7,7 @@ static volatile uint8_t dma_last_pos = 0; // 上次处理结束位置
 // 上层直接处理新数据的回调函数（零拷贝）
 static void app_process_rx_data(const uint8_t *data, uint8_t len)
 {
-    #if 1
+    #if 0
     uint8_t i;
 	// 这里直接操作 data[len]，不需要 memcpy
     // 例：简单回显
