@@ -1,9 +1,9 @@
 #include "bsp.h"
 
-static uint8_t tx_bufA[RX_BUFFER_SIZE];
-static uint8_t tx_bufB[RX_BUFFER_SIZE];
-static uint8_t *tx_fill = tx_bufA;  // 当前用于填充
-static uint8_t *tx_live = NULL;     // 正在 DMA 发送的缓冲
+//static uint8_t tx_bufA[RX_BUFFER_SIZE];
+//static uint8_t tx_bufB[RX_BUFFER_SIZE];
+//static uint8_t *tx_fill = tx_bufA;  // 当前用于填充
+//static uint8_t *tx_live = NULL;     // 正在 DMA 发送的缓冲
 
 uint8_t dma_tx_buf[RX_BUFFER_SIZE];
 void usart1_dma_send(const uint8_t *data, uint16_t len)

@@ -89,7 +89,7 @@ void freertos_handler(void)
 static void vTaskMsgPro(void *pvParameters)
 {
   
-  static uint8_t fan_switch_flag;
+  static uint8_t fan_switch_flag,power_on_flag = 0;
   while(1)
   {
      
@@ -97,6 +97,12 @@ static void vTaskMsgPro(void *pvParameters)
     {
         fan_singal_open();
         fan_group_open();
+        if(power_on_flag == 0)
+        {
+          power_on_flag++;
+          printf("vTaskMsgPro: fan_group_open \r\n");
+        }
+        
         
     }
     else

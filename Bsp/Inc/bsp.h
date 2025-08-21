@@ -38,8 +38,9 @@
 #include "bsp_fan.h"
 #include "bsp_rxdma_usart.h"
 #include "bsp_txdma_usart.h"
-#include "bsp_freertos.h"
+#include "bsp_protocol_sm.h"
 
+#include "bsp_freertos.h"
 #include "interrupt_manager.h"
 
 #define  USE_FreeRTOS      1
