@@ -28,12 +28,10 @@ void protocol_sm_init(void)
  * @param   byte: 输入字节
  * @retval  true: 完整帧已解析，false: 未解析到完整
  */
+#if 0
 bool protocol_sm_input(const uint8_t *data,uint8_t data_length) 
 {
-    
-   
-	
-	switch (sm.state) {
+    switch (sm.state) {
     case SM_WAIT_HEADER: //0x00 --> 0xA5 display board
         if (data[0]== FRAME_HEADER) {
             sm.idx = 1;
@@ -197,7 +195,106 @@ bool protocol_sm_input(const uint8_t *data,uint8_t data_length)
     }
     return false;
 }
+#else 
+bool protocol_sm_input(const uint8_t *data,uint8_t data_length) 
+{
+   
+    if(data_length ==6){
 
+     switch(sm.state){
+         case SM_WAIT_HEADER: //0x00 --> 0xA5 display board
+        if (data[0]== FRAME_HEADER) {
+            sm.idx = 1;
+            sm.state = SM_WAIT_FIXED;
+			//printf("sm->state=0 ! \r\n");
+        }
+        else{
+           return  FALSE;
+        }
+       
+
+    case SM_WAIT_FIXED: //0x01--"0x02" display board 
+        if (data[1] == DEVICE_ID) {
+           
+           sm.state = SM_WAIT_CMD_NOTICE;
+           sm.idx = 2;
+		  // printf("sm->state=1 ! \r\n");
+            
+        }
+        else{
+           sm.idx = 0;
+           sm.data_counter=0;
+           sm.state = SM_WAIT_HEADER;  
+            return  FALSE;
+        }
+      
+
+    case SM_WAIT_CMD_NOTICE:
+       sm.cmd_notice =data[2];
+       sm.state = SM_WAIT_FUN_JUDGE;
+      sm.idx = 3;
+	   //printf("sm->state=2 ! \r\n");
+            
+
+
+    case SM_WAIT_FUN_JUDGE:
+   
+          sm.cmd_fun_code=data[3];
+           sm.state = SM_WAIT_CMD_TAIL;
+           sm.idx = 4;
+       
+
+    //command notice 
+    case SM_WAIT_CMD_TAIL:
+        if (data[4] == FRAME_TAIL) {
+           
+           sm.state = SM_WAIT_CMD_BCC;
+           sm.idx = 5;
+        }
+        else{
+           sm.idx = 0;
+           sm.data_counter=0;
+           sm.state = SM_WAIT_HEADER;  
+           return FALSE;  
+        }
+
+
+  
+    case SM_WAIT_CMD_BCC:
+       sm.bcc_data = data[5];
+ 
+      calc =  calc_bcc(data, 5);
+      if(sm.bcc_data == calc){
+        sm.idx = 0;
+        sm.data_counter=0;
+        sm.state = SM_WAIT_HEADER;    
+        printf("receive data success !!!\r\n");
+        return  TRUE;
+
+      }
+      else{
+        sm.idx = 0;
+        sm.data_counter=0;
+        sm.state = SM_WAIT_HEADER;  
+         printf("receive data fail !!!\r\n");
+        return FALSE;
+      }
+    break;
+    
+  
+
+
+   
+    }
+   }
+    else{
+
+
+
+    }
+}
+
+#endif 
 /**
  * @brief  : 回调函数
  * @note    该函数会根据输入字节更新状态机状态，并处理完整帧
