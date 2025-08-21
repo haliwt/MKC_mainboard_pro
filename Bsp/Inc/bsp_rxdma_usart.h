@@ -5,7 +5,7 @@
 
 void usart1_irq_callback_process_rx(void);
 
-
+void usart1_dma_rx_handler(void);
 
 
 #endif 

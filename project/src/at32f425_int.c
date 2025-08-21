@@ -212,16 +212,19 @@ void DMA1_Channel1_IRQHandler(void)
 {
   /* add user code begin DMA1_Channel1_IRQ 0 */
   //USART1 TX DMA CHANNEL 
-   if (dma_flag_get(DMA1_FDT1_FLAG) != RESET)
-    {
-        dma_flag_clear(DMA1_FDT1_FLAG);
-       // uart1_rx.dma_half = 1;  // 前半缓冲数据可处理
-    }
+  
 
-    if (dma_flag_get(DMA1_HDT1_FLAG) != RESET)
+    if(dma_flag_get(DMA1_HDT1_FLAG) != RESET)
     {
         dma_flag_clear(DMA1_HDT1_FLAG);
-       // uart1_rx.dma_full = 1;  // 后半缓冲数据可处理
+         // uart1_rx.dma_half = 1;  // 前半缓冲数据可处理
+    }
+	
+	if (dma_flag_get(DMA1_FDT1_FLAG) != RESET)
+    {
+        dma_flag_clear(DMA1_FDT1_FLAG);
+     
+		 g_pro.uart1_rx_dma_full = 0; 
     }
 
     // 错误
@@ -309,7 +312,7 @@ void USART1_IRQHandler(void)
         (void)USART1->sts;  // 清标志
         (void)USART1->dt;
         
-
+         
         // 计算接收到的数据长度
         //g_pro.rx_usart1_length = dma_rx_bufFER_SIZE - dma_data_number_get(DMA1_CHANNEL1);
         

@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include "wk_adc.h"
 #include "wk_tmr.h"
 #include "wk_usart.h"
@@ -71,6 +72,7 @@ typedef struct _PROCESS_T{
   
   //timer param 
    uint8_t gTimer_1s_flag; //1s flag
+  uint8_t uart1_rx_dma_full; 
 
 
 }PROCESS_TYPEDEF;

@@ -132,7 +132,8 @@ static void vTaskStart(void *pvParameters)
 	while(1)
   {
      
-      usart1_dma_rx_process();
+      //usart1_dma_rx_process();
+      usart1_dma_rx_handler();
 			vTaskDelay(pdMS_TO_TICKS(10));
        
   }

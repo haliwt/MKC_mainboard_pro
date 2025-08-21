@@ -1,13 +1,20 @@
 #include "bsp.h"
 
+#define FRAME_MAX_LEN 20
+
+uint8_t frame_buf[FRAME_MAX_LEN ];
 
 
-static volatile uint8_t dma_last_pos = 0; // 上次处理结束位置
+
+uint8_t pos, rx_len,rx_pos, rx_last,last_pos; 
+volatile uint8_t rx_ready = false;
+
+volatile uint8_t dma_last_pos = 0; // 上次处理结束位置
 
 // 上层直接处理新数据的回调函数（零拷贝）
-static void app_process_rx_data(const uint8_t *data, uint8_t len)
+void usart1_dma_rx_handler(void)
 {
-    #if 0
+   #if 0
     uint8_t i;
 	// 这里直接操作 data[len]，不需要 memcpy
     // 例：简单回显
@@ -16,30 +23,75 @@ static void app_process_rx_data(const uint8_t *data, uint8_t len)
         usart_data_transmit(USART1, data[i]);
         
     }
-    #else 
-      usart1_dma_send(data, len); // 直接使用 DMA 发送
+    #else
+    uint16_t first_len;
+        if(rx_ready) {
+        rx_ready = false;
 
-    #endif 
+        if (rx_pos >= last_pos) {
+            memcpy(frame_buf,(const uint8_t *) &dma_rx_buf[last_pos], rx_len);
+           
+        } else {
+            first_len = RX_BUFFER_SIZE - last_pos;
+            memcpy(frame_buf, (const uint8_t *) &dma_rx_buf[last_pos], first_len);
+            memcpy(&frame_buf[first_len], (const uint8_t *) &dma_rx_buf[0], rx_pos);
+           
+        }
+
+      //  parse_frame(frame_buf, rx_len);
+        last_pos = rx_pos;
+         memset(frame_buf + rx_len, 0, FRAME_MAX_LEN - rx_len); // 清理剩余部分
+    }
+
+
+    #endif
+  
 }
 
-// 处理新数据（零拷贝核心）
+
+/**
+ * @brief  :  队列推入函数
+ * @note    任务内部使用队列接收数杮，需先初始化队列
+ * @param   None                
+ * @retval  None
+ */
+
+
+
+
 void usart1_irq_callback_process_rx(void)
 {
-    uint16_t pos = RX_BUFFER_SIZE - dma_data_number_get(DMA1_CHANNEL1); // 当前DMA写入位置
+  #if 0
+	pos = RX_BUFFER_SIZE - dma_data_number_get(DMA1_CHANNEL1); // 当前DMA写入位置
 
     if (pos != dma_last_pos) {
         if (pos > dma_last_pos) {
             // 数据在连续内存区
+            
             app_process_rx_data((const uint8_t *)&dma_rx_buf[dma_last_pos], pos - dma_last_pos);
         } else {
+        
             // 数据回绕，分两段处理
             app_process_rx_data((const uint8_t*)&dma_rx_buf[dma_last_pos],(RX_BUFFER_SIZE - dma_last_pos));
             if (pos > 0) {
+				  
                 app_process_rx_data((const uint8_t *)&dma_rx_buf[0], pos);
             }
         }
         dma_last_pos = pos;
+		
     }
+
+   #else
+    
+    pos = RX_BUFFER_SIZE - dma_data_number_get(DMA1_CHANNEL1); // 当前DMA写入位置
+    rx_len = (pos >= last_pos) ? (pos - last_pos) : (RX_BUFFER_SIZE - last_pos + pos);
+    rx_ready = true;
+    rx_pos = pos;
+
+
+
+   #endif 
 }
 
 
