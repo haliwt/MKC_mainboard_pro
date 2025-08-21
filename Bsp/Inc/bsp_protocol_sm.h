@@ -26,12 +26,12 @@ typedef enum {
     SM_WAIT_BCC=0X0C
 } ProtocolState;
 
-typedef struct ProtocolSM_TYPE{ //SM -state machine
+typedef struct ProtocolSM { //SM -state machine
     ProtocolState state;
-    uint8_t buf[ MAX_DATA_LEN]; // 头+ID+cmd+func+data+尾/BCC
+    //uint8_t buf[ MAX_DATA_LEN]; // 头+ID+cmd+func+data+尾/BCC
     uint8_t data_buf[4];
     uint8_t idx;
-    void (*on_frame_ready)(struct ProtocolSM_TYPE *sm); // 可选回调函数指针
+    void (*on_frame_ready)(struct ProtocolSM sm); // 可选回调函数指针
     uint8_t expected_len;
     uint8_t cmd_notice;
     uint8_t cmd_fun_code;
@@ -41,10 +41,10 @@ typedef struct ProtocolSM_TYPE{ //SM -state machine
     uint8_t  data_counter;
 } ProtocolSM;
 
-void protocol_sm_init(ProtocolSM *sm);
-bool protocol_sm_input(ProtocolSM *sm, const uint8_t *byte);
+void protocol_sm_init(void);
+bool protocol_sm_input(ProtocolSM sm,const uint8_t *data);
 
-void frame_parse_respond_handler(ProtocolSM *sm);
+void frame_parse_respond_handler(ProtocolSM sm);
 
 #endif 
 

@@ -2,8 +2,9 @@
 #define __BSP_RXDMA_USART_H
 //#include "at32f4xx.h"
 #include "at32f425.h"
+#define FRAME_MAX_LEN 20
 
-
+extern uint8_t frame_buf[FRAME_MAX_LEN ];
 
 void usart1_irq_callback_process_rx(void);
 

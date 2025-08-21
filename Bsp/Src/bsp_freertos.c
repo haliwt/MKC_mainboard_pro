@@ -33,7 +33,7 @@ typedef struct Msg
 
 }MSG_T;
 
-MSG_T   gl_tMsg; /* ?????????????? */
+MSG_T  gl_tMsg; /* ?????????????? */
 
 
 uint8_t fan_switch_flag,power_on_flag = 0;
@@ -150,7 +150,8 @@ static void vTaskStart(void *pvParameters)
 
         if((ulValue & DECODER_BIT_0 ) != 0)
         {
-           printf("vTaskStart_run !!!\r\n");
+           gl_tMsg.ucMessageID++;
+			
            usart1_dma_rx_handler();
 
         }
