@@ -36,7 +36,7 @@ typedef struct Msg
 MSG_T   gl_tMsg; /* ?????????????? */
 
 
-
+uint8_t fan_switch_flag,power_on_flag = 0;
 
 
 /**********************************************************************************************************
@@ -89,7 +89,7 @@ void freertos_handler(void)
 static void vTaskMsgPro(void *pvParameters)
 {
   
-  static uint8_t fan_switch_flag,power_on_flag = 0;
+  
   while(1)
   {
      
@@ -121,7 +121,7 @@ static void vTaskMsgPro(void *pvParameters)
    
       }
   
-			vTaskDelay(pdMS_TO_TICKS(50));
+	 vTaskDelay(pdMS_TO_TICKS(50));
 				                                   
  	}
 }	
@@ -134,16 +134,29 @@ static void vTaskMsgPro(void *pvParameters)
  */
 static void vTaskStart(void *pvParameters)
 {
-    
+  BaseType_t xResult;
+	const TickType_t xMaxBlockTime = pdMS_TO_TICKS(5000); //40//30/* 璁剧疆鏈拷澶х瓑寰呮椂闂翠负30ms */
+	uint32_t ulValue;  
 	while(1)
   {
-     
-      //usart1_dma_rx_process();
-      usart1_dma_rx_handler();
-			vTaskDelay(pdMS_TO_TICKS(10));
-       
-  }
+     xResult = xTaskNotifyWait(0x00000000,      
+						          0xFFFFFFFF,      
+						          &ulValue,        /* 淇濆瓨ulNotifiedValue鍒板彉閲弖lValue涓�1锟�7 */
+						          xMaxBlockTime);  /* block times,releas cpu power right */
+		
+	if( xResult == pdPASS )
+	{
+    	/* 鎺ユ敹鍒版秷鎭紝妫拷娴嬮偅涓綅琚寜涓�1锟�7 */
+
+        if((ulValue & DECODER_BIT_0 ) != 0)
+        {
+           printf("vTaskStart_run !!!\r\n");
+           usart1_dma_rx_handler();
+
+        }
+    }
  }
+}
        
 
   
@@ -182,4 +195,17 @@ void AppTaskCreate (void)
 
 
 
+
+void vTaskNotic_Decoder_irq_handler(void)
+{
+  BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+  xTaskNotifyFromISR(xHandleTaskStart,  /* 鐩爣浠诲姟 */
+                    DECODER_BIT_0 ,     /* 璁剧疆鐩爣浠诲姟浜嬩欢鏍囧織浣峛it0  */
+                    eSetBits,  /* 灏嗙洰鏍囦换鍔＄殑浜嬩欢鏍囧織浣嶄笌BIT_0杩涜鎴栨搷浣滐紝 灏嗙粨鏋滆祴鍊肩粰浜嬩欢鏍囧織浣� */
+                    &xHigherPriorityTaskWoken);
+
+                /* 濡傛灉xHigherPriorityTaskWoken = pdTRUE锛岄偅涔堥€€鍑轰腑鏂悗鍒囧埌褰撳墠鏈€楂樹紭鍏堢骇浠诲姟鎵ц */
+                portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+ 
+}
 

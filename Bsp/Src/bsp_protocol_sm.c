@@ -23,74 +23,169 @@ void protocol_sm_init(ProtocolSM *sm)
  * @param   byte: 输入字节
  * @retval  true: 完整帧已解析，false: 未解析到完整
  */
-bool protocol_sm_input(ProtocolSM *sm, uint8_t byte) 
+bool protocol_sm_input(ProtocolSM *sm, const uint8_t *byte) 
 {
     uint8_t calc ;
 	
 	switch (sm->state) {
-    case SM_WAIT_HEADER:
-        if (byte == FRAME_HEADER) {
-            sm->buf[0] = byte;
+    case SM_WAIT_HEADER: //0x00 --> 0xA5 display board
+        if (byte[0] == FRAME_HEADER) {
+            sm->buf[0] = byte[0];
             sm->idx = 1;
             sm->state = SM_WAIT_FIXED;
         }
-        break;
-
-    case SM_WAIT_FIXED:
-        sm->buf[sm->idx++] = byte;
-        if (sm->idx == 4) { // 已收 header, ID, cmd, func
-            if (sm->buf[1] != DEVICE_ID) {
-                sm->state = SM_WAIT_HEADER; // ID不符，重来
-                sm->idx = 0;
-                break;
-            }
-            if (sm->buf[3] == FUNC_DATA) {
-                sm->state = SM_WAIT_DATA;
-            } else {
-                sm->state = SM_WAIT_TAIL;
-            }
+        else{
+           return  false;
         }
         break;
 
-    case SM_WAIT_DATA:
-        sm->buf[sm->idx++] = byte;
-        if (sm->idx >= MAX_DATA_LEN + 4) { // 防溢出
-            sm->state = SM_WAIT_HEADER;
-            sm->idx = 0;
+    case SM_WAIT_FIXED: //0x01--"0x02" display board 
+        if (byte[1] == DEVICE_ID) {
+           
+           sm->state = SM_WAIT_CMD_NOTICE;
+           sm->idx = 2;
+            
         }
-        // 数据帧长度未知，这里可加协议内长度字段判断
-        // 简化：假设上层知道何时结束，直接等到 BCC
-        // if (sm->idx >= 5 && /*条件判断结束*/) {
-        //     sm->state = SM_WAIT_BCC;
-        // }
+        else{
+           sm->idx = 0;
+           sm->data_counter=0;
+           sm->state = SM_WAIT_HEADER;  
+        }
         break;
+
+    case SM_WAIT_CMD_NOTICE:
+       sm->cmd_notice =byte[2];
+       sm->state = SM_WAIT_CMD_NOTICE;
+      sm->idx = 3;
+            
+    break;
+
+    case SM_WAIT_FUN_JUDGE:
+       sm->cmd_fun_code =byte[3];
+       if(sm->cmd_fun_code == FUNC_DATA){
+          sm->state = SM_WAIT_DATA_LENGHT;
+          sm->idx = 4;
+
+       }
+       else{
+           sm->cmd_execute_code =byte[3];
+           sm->state = SM_WAIT_CMD_TAIL;
+           sm->idx = 4;
+       }
+
+    break;
+
+    //command notice 
+    case SM_WAIT_CMD_TAIL:
+        if (byte[4] == FRAME_TAIL) {
+           
+           sm->state = SM_WAIT_CMD_BCC;
+           sm->idx = 5;
+        }
+        else{
+           sm->idx = 0;
+           sm->data_counter=0;
+           sm->state = SM_WAIT_HEADER;    
+        }
+
+
+    break;
+
+    case SM_WAIT_CMD_BCC:
+       sm->bcc_data = byte[5];
+ 
+      calc =  calc_bcc(sm->buf, 5);
+      if(sm->bcc_data == calc){
+        sm->idx = 0;
+        sm->data_counter=0;
+        sm->state = SM_WAIT_HEADER;    
+        return true;
+
+      }
+
+    break;
+
+    //data length 
+    case SM_WAIT_DATA_LENGHT:
+      sm->data_length =byte[4];
+      sm->state = SM_WAIT_DATA_ONE;
+      sm->idx = 5;
+
+
+    break;
+
+    case SM_WAIT_DATA_ONE:
+      sm->data_buf[sm->data_counter]=byte[5];
+      sm->data_counter++;
+      if(sm->data_counter == sm->data_length){
+        sm->state = SM_WAIT_TAIL;
+        sm->idx = 6;
+      }
+      else{
+
+        sm->state = SM_WAIT_DATA_TWO;
+        sm->idx = 6;
+
+      }
+       
+    break;
+
+    case SM_WAIT_DATA_TWO:
+      sm->data_buf[sm->data_counter]=byte[6];
+      sm->data_counter++;
+      if(sm->data_counter == sm->data_length){
+        sm->state = SM_WAIT_TAIL;
+        sm->idx = 7;
+      }
+      else{
+        sm->state = SM_WAIT_DATA_THREE;
+        sm->idx = 7;
+      }
+       
+    break;
+
+    case SM_WAIT_DATA_THREE:
+      sm->data_buf[sm->data_counter]=byte[6];
+      sm->data_counter++;
+      if(sm->data_counter == sm->data_length){
+        sm->state = SM_WAIT_TAIL;
+        sm->idx = 8;
+      }
+      else{
+        sm->state = SM_WAIT_DATA_FOUR;
+        sm->idx = 8;
+      }
+       
+    break;
 
     case SM_WAIT_TAIL:
-        sm->buf[sm->idx++] = byte;
-        if (byte == FRAME_TAIL) {
-            sm->state = SM_WAIT_BCC;
-        } else {
-            sm->state = SM_WAIT_HEADER;
-            sm->idx = 0;
+      
+       if (byte[sm->idx] == FRAME_TAIL) {
+           
+           sm->state = SM_WAIT_BCC;
+           sm->idx = sm->idx + 1;//sm->idx + 1;
+		  // sm->idx++;
+        }
+        else{
+           sm->idx = 0;
+           sm->data_counter=0;
+           sm->state = SM_WAIT_HEADER;    
         }
         break;
 
     case SM_WAIT_BCC:
-        sm->buf[sm->idx++] = byte;
-        calc = (sm->buf[3] == FUNC_DATA)
-            ? calc_bcc(sm->buf, sm->idx - 1)
-            : calc_bcc(sm->buf, 4);
-        if (calc == byte) {
-            // ✅ 一帧完成
-            sm->state = SM_WAIT_HEADER;
-            sm->idx = 0;
-            return true;
-        } else {
-            // 校验失败
-            sm->state = SM_WAIT_HEADER;
-            sm->idx = 0;
-        }
-        break;
+       sm->bcc_data = byte[sm->idx];
+ 
+      calc =  calc_bcc(sm->buf, sm->idx);
+      if(sm->bcc_data == calc){
+        sm->idx = 0;
+        sm->data_counter=0;
+        sm->state = SM_WAIT_HEADER;    
+        return true;
+
+      }
+     
+    break;
     }
     return false;
 }

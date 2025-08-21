@@ -55,9 +55,8 @@ void usart1_dma_rx_handler(void)
 void protocol_sm_feed(ProtocolSM *sm, const uint8_t *data, uint8_t len)
 {
     uint8_t i;
-	for ( i = 0; i < len; i++)
-    {
-        if(protocol_sm_input(sm, data[i]))
+	
+        if(protocol_sm_input(sm, data))
         {
             // 如果返回 true，说明刚好解析到一帧
             // 这里可以调用帧处理函数
@@ -65,12 +64,14 @@ void protocol_sm_feed(ProtocolSM *sm, const uint8_t *data, uint8_t len)
            if (sm->on_frame_ready)  // 可选回调
            {
                sm->on_frame_ready(sm);
-           }else{
-           printf("protocol is fail !!!.\r\n");
-
            }
+
         }
-    }
+        else{
+           printf("protocol is fail !!!.\r\n");
+        }
+        
+    
 }
 
 
@@ -113,7 +114,7 @@ void usart1_irq_callback_process_rx(void)
     rx_len = (pos >= last_pos) ? (pos - last_pos) : (RX_BUFFER_SIZE - last_pos + pos);
     rx_ready = true;
     rx_pos = pos;
-
+    vTaskNotic_Decoder_irq_handler();
 
 
    #endif 

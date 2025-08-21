@@ -81,7 +81,8 @@ void wk_dma1_channel1_init(void)
    // dma_init_struct.buffer_size            = dma_rx_bufFER_SIZE;
    // dma_init_struct.peripheral_base_addr   = (uint32_t)&USART1->dt;
    // dma_init_struct.memory_base_addr       = (uint32_t)dma_rx_buf;
-   
+    //NVIC_SetPriority(DMA1_Channel1_IRQn, 1); // 数值越小优先级越高
+     nvic_irq_enable(DMA1_Channel1_IRQn, 3, 0);
        // 使能DMA通道
     dma_channel_enable(DMA1_CHANNEL1, TRUE);
     
@@ -138,6 +139,8 @@ void wk_dma1_channel2_init(void)
     dma_init_struct.loop_mode_enable      = FALSE;
 
     /* 启用 USART1 的 DMA 发送功能 */
+    // 例如设置 DMA1_Channel1 中断，抢占优先级 1，子优先级 0
+    nvic_irq_enable(DMA1_Channel3_2_IRQn, 3, 1);
     usart_dma_transmitter_enable(USART1, TRUE);
      /* 启动 DMA 发送 */
     dma_channel_enable(DMA1_CHANNEL2, TRUE);
@@ -178,7 +181,7 @@ void wk_dma1_channel3_init(void)
    *     --void DMA1_Channel3_2_IRQHandler(void)
    */ 
   /* add user code begin dma1_channel3 1 */
-
+    nvic_irq_enable(DMA1_Channel3_2_IRQn, 3, 2);
   /* add user code end dma1_channel3 1 */
 }
 

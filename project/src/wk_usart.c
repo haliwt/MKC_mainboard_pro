@@ -88,6 +88,11 @@ void wk_usart1_init(void)
    */
 
   /* add user code begin usart1_init 2 */
+   // 1. 配置优先级分组
+    //nvic_priority_group_config(NVIC_PRIORITY_GROUP_3);
+
+    // 3. 配置 USART1 中断，优先级低
+   // nvic_irq_enable(USART1_IRQn, 2, 3);
 
   /* add user code end usart1_init 2 */
 

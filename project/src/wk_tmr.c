@@ -204,10 +204,11 @@ void wk_tmr17_init(void)
 
   /* add user code begin tmr17_init 2 */
     /* 3. 使能更新中断（溢出中断） */
+    nvic_priority_group_config(NVIC_PRIORITY_GROUP_4);
     tmr_interrupt_enable(TMR17, TMR_OVF_INT, TRUE);
 
     /* 4. NVIC 使能对应中断向量 */
-    nvic_irq_enable(TMR17_GLOBAL_IRQn, 3, 0);
+    nvic_irq_enable(TMR17_GLOBAL_IRQn, 2, 4);
   /* add user code end tmr17_init 2 */
 }
 
