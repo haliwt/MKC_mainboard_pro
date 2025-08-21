@@ -1,10 +1,14 @@
 #include "bsp.h"
 
+ProtocolSM sm;
+uint8_t calc ;
 
 static uint8_t calc_bcc(const uint8_t *buf, uint8_t len)
 {
-    uint8_t bcc = 0,i;
-    for (i = 0; i < len; i++) bcc ^= buf[i];
+    uint8_t bcc=0 ,i;
+    for (i = 0; i < (len-1); i++){
+		bcc ^= buf[i];
+	}
     return bcc;
 }
 
@@ -24,9 +28,10 @@ void protocol_sm_init(void)
  * @param   byte: 输入字节
  * @retval  true: 完整帧已解析，false: 未解析到完整
  */
-bool protocol_sm_input(ProtocolSM sm,const uint8_t *data) 
+bool protocol_sm_input(const uint8_t *data,uint8_t data_length) 
 {
-    uint8_t calc ;
+    
+   
 	
 	switch (sm.state) {
     case SM_WAIT_HEADER: //0x00 --> 0xA5 display board
@@ -57,7 +62,7 @@ bool protocol_sm_input(ProtocolSM sm,const uint8_t *data)
 
     case SM_WAIT_CMD_NOTICE:
        sm.cmd_notice =data[2];
-       sm.state = SM_WAIT_CMD_NOTICE;
+       sm.state = SM_WAIT_FUN_JUDGE;
       sm.idx = 3;
 	   //printf("sm->state=2 ! \r\n");
             

@@ -42,7 +42,7 @@ typedef struct ProtocolSM { //SM -state machine
 } ProtocolSM;
 
 void protocol_sm_init(void);
-bool protocol_sm_input(ProtocolSM sm,const uint8_t *data);
+bool protocol_sm_input(const uint8_t *data, uint8_t length);
 
 void frame_parse_respond_handler(ProtocolSM sm);
 

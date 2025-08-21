@@ -4,13 +4,13 @@
 
 uint8_t frame_buf[FRAME_MAX_LEN ];
 
-ProtocolSM sm;
+
 uint8_t counter_flag;
 uint8_t pos, rx_len,rx_pos, rx_last,last_pos; 
 volatile uint8_t rx_ready = false;
 
 volatile uint8_t dma_last_pos = 0; // 上次处理结束位置
-void protocol_sm_feed(ProtocolSM sm, const uint8_t *data, uint8_t len);
+
 
 // 上层直接处理新数据的回调函数（零拷贝）
 void usart1_dma_rx_handler(void)
@@ -27,8 +27,8 @@ void usart1_dma_rx_handler(void)
     #else
     uint8_t first_len;
         
-        if(rx_ready ==1){
-            rx_ready=0;
+      //  if(rx_ready ==1){
+        //    rx_ready=0;
         if (rx_pos >= last_pos) {
             memcpy(frame_buf,(const uint8_t *) &dma_rx_buf[last_pos], rx_len);
            
@@ -44,24 +44,16 @@ void usart1_dma_rx_handler(void)
         memset(frame_buf + rx_len, 0, MAX_DATA_LEN - rx_len); // 清理剩余部分
        
 		//protocol_sm_feed(&sm,); // 状态机解析
-         protocol_sm_feed(sm,frame_buf, rx_len);
+        // protocol_sm_feed(sm,frame_buf, rx_len);
+        protocol_sm_input(frame_buf,rx_len);
         counter_flag++;
-    }
+ //   }
 
     #endif
   
 }
 
-void protocol_sm_feed(ProtocolSM sm,const uint8_t * data,uint8_t len)
-{
-        // printf("parse setment !!!.\r\n");
-	
-        protocol_sm_input(sm,data);
-      
-        
-        
-    
-}
+
 
 
 /**
