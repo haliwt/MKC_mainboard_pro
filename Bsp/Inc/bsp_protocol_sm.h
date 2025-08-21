@@ -39,10 +39,12 @@ typedef struct ProtocolSM { //SM -state machine
     uint8_t  bcc_data;
     uint8_t   data_length;
     uint8_t  data_counter;
+    uint8_t  data_to_tail;
 } ProtocolSM;
 
 void protocol_sm_init(void);
-bool protocol_sm_input(const uint8_t *data, uint8_t length);
+bool protocol_sm_cmd_input(const uint8_t *data, uint8_t length);
+bool protocol_sm_data_input(const uint8_t *data,uint8_t data_length) ;
 
 void frame_parse_respond_handler(ProtocolSM sm);
 
