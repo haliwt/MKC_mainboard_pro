@@ -90,22 +90,30 @@ extern "C" {
 /* Private defines -------------------------------------------------------------*/
 #define COOLER_PIN    GPIO_PINS_13
 #define COOLER_GPIO_PORT    GPIOC
+
 #define FAN_GROUP_PIN    GPIO_PINS_14
 #define FAN_GROUP_GPIO_PORT    GPIOC
+
 #define FAN_CTL_PIN    GPIO_PINS_15
 #define FAN_CTL_GPIO_PORT    GPIOC
+
 #define BEEP_PWM_PIN    GPIO_PINS_5
 #define BEEP_PWM_GPIO_PORT    GPIOA
+
 #define ADC_DET24V_PIN    GPIO_PINS_6
 #define ADC_DET24V_GPIO_PORT    GPIOA
+
 #define ADC_TEMP_PIN    GPIO_PINS_0
 #define ADC_TEMP_GPIO_PORT    GPIOB
+
 #define ADC_WATER_PIN    GPIO_PINS_1
 #define ADC_WATER_GPIO_PORT    GPIOB
+
 #define ULTR_PWM_PIN    GPIO_PINS_8
 #define ULTR_PWM_GPIO_PORT    GPIOA
-#define PLASMA_PIN    GPIO_PINS_6
-#define PLASMA_GPIO_PORT    GPIOB
+
+#define PLASMA_PIN                    GPIO_PINS_6
+#define PLASMA_GPIO_PORT              GPIOB
 
 /* exported functions ------------------------------------------------------- */
   /* system clock config. */

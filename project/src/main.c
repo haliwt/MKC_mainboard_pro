@@ -31,7 +31,7 @@
 #include "wk_usart.h"
 #include "wk_dma.h"
 #include "wk_gpio.h"
-#include "freertos_app.h"
+//#include "freertos_app.h"
 
 /* private includes ----------------------------------------------------------*/
 /* add user code begin private includes */

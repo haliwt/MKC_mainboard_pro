@@ -20,6 +20,7 @@ void power_on_handler(void)
     case 0:
       power_off_step=0;
       power_on_next_step =0;
+      g_pro.gTimer_1s_flag=0;
       power_on_step =1;
 
     break;
@@ -58,12 +59,20 @@ void power_on_handler(void)
      break;
 
      case 1:
+          plasma_open();
           cooler_open();
 
          power_on_next_step=2;
      break;
 
      case 2:
+
+        if(g_pro.gTimer_1s_flag > 4){ //send temperature value to dispalboard
+            g_pro.gTimer_1s_flag=0;
+            sendData_to_dispBoard(0x1A,32);
+            vTaskDelay(pdMS_TO_TICKS(10));
+        }
+        
 
      break;
 
@@ -132,7 +141,7 @@ static void power_off_process(void)
        cooler_close();
        fan_group_close();
        fan_oneself_close();
-
+       plasma_close();
       
      break;
 

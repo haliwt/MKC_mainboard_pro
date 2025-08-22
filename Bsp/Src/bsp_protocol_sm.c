@@ -16,12 +16,12 @@ static uint8_t calc_bcc(const uint8_t *buf, uint8_t len)
 
 void protocol_sm_init(void) 
 {
-    ProtocolSM tsm;
-    tsm.state = SM_WAIT_HEADER;
-    tsm.idx = 0;
-    tsm.expected_len = 0;
+   // ProtocolSM tsm;
+   // tsm.state = SM_WAIT_HEADER;
+  //  tsm.idx = 0;
+   // tsm.expected_len = 0;
              // 初始化状态机
-    tsm.on_frame_ready = frame_parse_respond_handler; // 绑定回调
+   // tsm.on_frame_ready = frame_parse_respond_handler; // 绑定回调
 }
 
 
@@ -114,7 +114,8 @@ bool protocol_sm_cmd_input(const uint8_t *data,uint8_t data_length)
     break;
     
   }
-   }
+	 return FALSE ;
+  }
   
 }
 /**
@@ -321,20 +322,7 @@ bool protocol_sm_data_input(const uint8_t *data,uint8_t data_length)
  * @param   byte: 输入字节
  * @retval  true: 完整帧已解析，false: 未解析到完整
  */
-void frame_parse_respond_handler(ProtocolSM sm)
-{
-    // sm->buf 里是完整帧数据，长度是 sm->idx
-	uint8_t i;
-    printf("frem.length=%d \r\n", sm.idx);
 
-    // 例如：打印十六进制
-    for (i = 0; i < sm.idx; i++) {
-        printf("%02X ", frame_buf[i]);
-    }
-    printf("\n");
-
-    // TODO: 在这里做协议解析、业务处理
-}
 
 /**
  * @brief  : parse protocol form display board 
@@ -351,10 +339,12 @@ static void getParseCmd_displayBoard(void)
 
         if(sm.cmd_fun_code==0x01){//power on
            buzzer_sound() ; 
+           responseCmd_fun(0x01,sm.cmd_fun_code);
            g_pro.power_on = power_on;  
         }
         else{
            buzzer_sound() ; 
+           responseCmd_fun(0x0,sm.cmd_fun_code);
            g_pro.power_on = power_off;  
         }
 
