@@ -67,11 +67,11 @@ void power_on_handler(void)
 
      case 2:
 
-        if(g_pro.gTimer_adc_counter> 1){ //send temperature value to dispalboard
+        if(g_pro.gTimer_adc_counter> 7){ //send temperature value to dispalboard
             g_pro.gTimer_adc_counter=0;
             //sendData_to_dispBoard(0x1A,32);
             adcRead_voltageValue();
-            vTaskDelay(pdMS_TO_TICKS(10));
+           // vTaskDelay(pdMS_TO_TICKS(10));
         }
         
 

@@ -19,6 +19,8 @@ volatile uint8_t dma_trans_complete_flag;
 
 adc_typedef_t adc_t;
 
+ uint8_t disp_temp,disp_atom;
+
 /**
  * 
  * @brief: read ADC switch result voltage value 
@@ -28,36 +30,28 @@ adc_typedef_t adc_t;
 void adcRead_voltageValue(void)
  {
     /* 打印采样结果 */
-     static uint8_t sample_counter;
-     static uint16_t sample_total;
-	 
-     sample_counter++;
+   
+	
+   
      adc_t.adc_detected= (adc_buf[0]  * 3300)/4095;
+     //vTaskDelay(pdMS_TO_TICKS(5));
      adc_t.adc_temperature = (adc_buf[1] * 3300)/4095;
+     //vTaskDelay(pdMS_TO_TICKS(5));
      adc_t.adc_atomization =  (adc_buf[2] * 3300)/4095;
-
-     if(sample_counter < 5){
-
-      sample_total += adc_t.adc_temperature;
-
-     }
-     else{
-        sample_counter=6;
-        adc_t.adc_temperature= sample_total/4;
-
-     }
-
-  
-     if(sample_counter==6){
-       sample_counter=0;
+     //vTaskDelay(pdMS_TO_TICKS(5));
+     
      Get_Ntc_Resistance_Temperature_Handler(adc_t.adc_temperature);
-     adc_t.adc_temperature_value= getNtc_linearTemperature_value();
+     disp_temp= getNtc_linearTemperature_value();
+
+      Get_Ntc_Resistance_Temperature_Handler(adc_t.adc_atomization);
+      disp_atom= getNtc_linearTemperature_value();
+
 
      //printf("adc_det = %d\r\n",adc_t.adc_detected);
-     printf("adc_temp = %d\r\n",adc_t.adc_temperature_value);
-     //printf("adc_atom = %d\r\n",adc_t.adc_atomization);
+     printf("adc_temp = %d\r\n",disp_temp);
+     printf("adc_atom = %d\r\n",disp_atom);
 
-     }
+     
      
       adc_again_enable_adc();
 
