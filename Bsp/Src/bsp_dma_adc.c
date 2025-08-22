@@ -13,7 +13,7 @@ volatile uint8_t dma_trans_complete_flag;
   uint16_t adc_detected;
   uint16_t adc_temperature;
   uint16_t adc_atomization;
-    
+  uint8_t  adc_temperature_value;
 
  }adc_typedef_t;
 
@@ -33,9 +33,12 @@ void adcRead_voltageValue(void)
      adc_t.adc_temperature = (adc_buf[1] * 3300)/4095;
      adc_t.adc_atomization =  (adc_buf[2] * 3300)/4095;
 
-     printf("adc_det = %d\r\n",adc_t.adc_detected);
-     printf("adc_temp = %d\r\n",adc_t.adc_temperature);
-     printf("adc_atom = %d\r\n",adc_t.adc_atomization);
+     Get_Ntc_Resistance_Temperature_Handler(adc_t.adc_temperature);
+     adc_t.adc_temperature_value= getNtc_linearTemperature_value();
+
+     //printf("adc_det = %d\r\n",adc_t.adc_detected);
+     printf("adc_temp = %d\r\n",adc_t.adc_temperature_value);
+     //printf("adc_atom = %d\r\n",adc_t.adc_atomization);
      
       adc_again_enable_adc();
 
