@@ -63,14 +63,18 @@
 	#include "EventRecorder.h"
 #endif
 
+typedef enum{
+  power_off,
+  power_on
 
+}power_state_enum;
 	
 
 // system.h
 typedef struct {
     uint8_t power_on;   // 开机标志
     uint8_t mode;
-    uint16_t error_code;
+    uint8_t error_code;
     // ... 其他系统状态
    uint8_t gTimer_1s_flag;
 } system_param_t;

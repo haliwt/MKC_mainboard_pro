@@ -23,14 +23,6 @@ void protocol_sm_init(void)
              // 初始化状态机
     tsm.on_frame_ready = frame_parse_respond_handler; // 绑定回调
 }
-/**
- * @brief  :  状态机输入函数
- * @note    该函数会根据输入字节更新状态机状态，并处理完整帧
- * @param   sm: 状态机实例  
- * @param   byte: 输入字节
- * @retval  true: 完整帧已解析，false: 未解析到完整
- */
-
 
 
 /**
@@ -358,11 +350,12 @@ static void getParseCmd_displayBoard(void)
    case 0x01 : //power on or off
 
         if(sm.cmd_fun_code==0x01){//power on
-             
+           buzzer_sound() ; 
+           g_pro.power_on = power_on;  
         }
         else{
-
-
+           buzzer_sound() ; 
+           g_pro.power_on = power_off;  
         }
 
     /* code */
