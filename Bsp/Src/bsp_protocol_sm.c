@@ -460,8 +460,8 @@ bool protocol_sm_data_input(const uint8_t *data,uint8_t data_length)
 
         }
         else{
-                printf("receive data fail <6  !!!\r\n");
-                sm.idx = 0;
+            printf("receive data fail <6  !!!\r\n");
+            sm.idx = 0;
             sm.data_counter=0;
             sm.data_to_tail=0;
             sm.state = SM_WAIT_HEADER;  
