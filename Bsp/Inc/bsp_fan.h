@@ -6,8 +6,8 @@
 void fan_group_open(void);
 void fan_group_close(void);
 
-void fan_singal_open(void);
-void fan_singal_close(void);
+void fan_oneself_open(void);
+void fan_oneself_close(void);
 
 
 #endif 

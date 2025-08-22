@@ -1,7 +1,8 @@
 #include "bsp.h"
 
-uint8_t power_on_step;
-
+uint8_t power_on_step,power_off_step,power_off_next_step,power_on_next_step =0;
+ static void power_on_process(void);
+ static void power_off_process(void);
 /**
  * @brief  :  power on handler
  * @note    该函数会根据输入字节更新状态机状态，并处理完整帧
@@ -11,33 +12,28 @@ uint8_t power_on_step;
  */
 
 
-void power_on_handler(uint8_t power_flag)
+void power_on_handler(void)
 {
 
-   switch(power_flag){
-
-    case 1:
-
-
-
-
-    break;
+   switch(power_on_step){
 
     case 0:
+      power_off_step=0;
+      power_on_next_step =0;
+      power_on_step =1;
 
+    break;
+
+    case 1:
+     power_on_process();
 
 
     break;
 
-
-
-
-
+    default:
+    break;
 
    }
-
-
-
 }
 /**
  * @brief  :  power on initial process
@@ -47,26 +43,104 @@ void power_on_handler(uint8_t power_flag)
  * @retval  true: 完整帧已解析，false: 未解析到完整
  */
 
- static void power_on_init(void)
+ static void power_on_process(void)
  {
-    switch(power_on_step){
+    switch(power_on_next_step){
 
      case 0:
-        
-          
-
+        power_off_step=0;
+   
+        fan_group_open();
+        fan_oneself_open();
+       
+       
+        power_on_next_step=1;
      break;
 
      case 1:
+          cooler_open();
 
-
+         power_on_next_step=2;
      break;
 
      case 2:
 
      break;
 
+     default:
+     break;
+
     }
+
+}
+
+/**
+ * @brief  :  power off main  process
+ * @note    该函数会根据输入字节更新状态机状态，并处理完整帧
+ * @param   sm: 状态机实例  
+ * @param   byte: 输入字节
+ * @retval  true: 完整帧已解析，false: 未解析到完整
+ */
+
+ void power_off_handler(void)
+ {
+     switch(power_off_step){
+
+      case 0:
+          power_on_step =0;
+          power_off_next_step=0;   
+          power_off_step=1;
+
+      break;
+
+      case 1:
+          power_off_process();
+
+      break;
+
+      default:
+
+      break;
+
+
+
+
+     }
+     
+
+
+ }
+/**
+ * @brief  :  power off initial  process
+ * @note    该函数会根据输入字节更新状态机状态，并处理完整帧
+ * @param   sm: 状态机实例  
+ * @param   byte: 输入字节
+ * @retval  true: 完整帧已解析，false: 未解析到完整
+ */
+static void power_off_process(void)
+{
+   switch(power_off_next_step){
+
+     case 0:
+    
+       cooler_close();
+      
+       power_off_next_step=1;
+     break;
+
+     case 1:
+       cooler_close();
+       fan_group_close();
+       fan_oneself_close();
+
+      
+     break;
+
+     default:
+
+     break;
+
+ }
 
 }
 

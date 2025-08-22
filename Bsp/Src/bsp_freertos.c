@@ -89,38 +89,25 @@ void freertos_handler(void)
 static void vTaskMsgPro(void *pvParameters)
 {
   
-  
+  static uint8_t sound_first_flag;
   while(1)
   {
      
-    if(fan_switch_flag == 0)
-    {
-        fan_singal_open();
-        fan_group_open();
-        if(power_on_flag == 0)
-        {
-          power_on_flag++;
-          buzzer_sound();
-          printf("vTaskMsgPro: fan_group_open \r\n");
-        }
-        
-        
-    }
-    else
-    {
-      fan_singal_close();
-      fan_group_close();
-        
-    }
-    
- 
-      // 2. 每隔120s和240s执行一次
-    if(g_pro.gTimer_1s_flag > 180) // 240s
-     {
-        g_pro.gTimer_1s_flag = 0;
-        fan_switch_flag = !fan_switch_flag; // 切换风扇状态
-   
-      }
+   if(sound_first_flag ==0){
+       sound_first_flag++;
+       buzzer_sound();
+
+   }
+   if(g_pro.power_on==power_on){
+      
+      power_on_handler();
+
+
+   }
+   else{
+
+     power_off_handler();
+   }
   
 	 vTaskDelay(pdMS_TO_TICKS(50));
 				                                   

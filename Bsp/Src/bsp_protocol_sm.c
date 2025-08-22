@@ -3,7 +3,7 @@
 ProtocolSM sm;
 uint8_t calc ;
 
-static void get_parse_displayBoard(void);
+static void getParseCmd_displayBoard(void);
 
 static uint8_t calc_bcc(const uint8_t *buf, uint8_t len)
 {
@@ -100,7 +100,7 @@ bool protocol_sm_cmd_input(const uint8_t *data,uint8_t data_length)
         sm.idx = 0;
         sm.data_counter=0;
         sm.state = SM_WAIT_HEADER;    
-        printf("receive data success !!!\r\n");
+        getParseCmd_displayBoard();
         return  TRUE;
 
       }

@@ -14,12 +14,12 @@ FAN_GROUP_GPIO_PORT->clr = FAN_GROUP_PIN;
 }
 
 
-void fan_singal_open(void)
+void fan_oneself_open(void)
 {
   FAN_CTL_GPIO_PORT ->scr = FAN_CTL_PIN ;
 
 }
-void fan_singal_close(void)
+void fan_oneself_close(void)
 {
 	FAN_CTL_GPIO_PORT ->clr = FAN_CTL_PIN ;
 
