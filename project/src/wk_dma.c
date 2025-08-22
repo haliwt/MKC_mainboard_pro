@@ -184,6 +184,7 @@ void wk_dma1_channel3_init(void)
    *     --void DMA1_Channel3_2_IRQHandler(void)
    */ 
   /* add user code begin dma1_channel3 1 */
+   // dma_interrupt_enable(DMA1_CHANNEL3, DMA_FDT_INT, TRUE);
     dma_channel_enable(DMA1_CHANNEL3, TRUE);
     //nvic_irq_enable(DMA1_Channel3_2_IRQn, 4, 0);
   /* add user code end dma1_channel3 1 */

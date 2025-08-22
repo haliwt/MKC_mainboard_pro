@@ -73,8 +73,8 @@ void wk_adc1_init(void)
 
   /* adc_settings------------------------------------------------------------------- */
   adc_base_default_para_init(&adc_base_struct);
-  adc_base_struct.sequence_mode = TRUE;//FALSE;
-  adc_base_struct.repeat_mode = TRUE ;//FALSE;
+  adc_base_struct.sequence_mode = TRUE;//FALSE; //be used to set "TRUE" ,has three channel .
+  adc_base_struct.repeat_mode = FALSE;
   adc_base_struct.data_align = ADC_RIGHT_ALIGNMENT;
   adc_base_struct.ordinary_channel_length = 3;//1; need ADC1 switch three channel .
   adc_base_config(ADC1, &adc_base_struct);
