@@ -162,9 +162,12 @@ void wk_dma1_channel3_init(void)
 
   dma_reset(DMA1_CHANNEL3);
   dma_default_para_init(&dma_init_struct);
+  dma_init_struct.buffer_size = 3;//WT.EDIT has three input ADC
   dma_init_struct.direction = DMA_DIR_PERIPHERAL_TO_MEMORY;
+  dma_init_struct.memory_base_addr = (uint32_t)adc_buf; //ADC switch to save data to "adc1_buf"
   dma_init_struct.memory_data_width = DMA_MEMORY_DATA_WIDTH_HALFWORD;
   dma_init_struct.memory_inc_enable = TRUE;
+  dma_init_struct.peripheral_base_addr = (uint32_t)&(ADC1->odt);//ADC must add this item read "Register" value
   dma_init_struct.peripheral_data_width = DMA_PERIPHERAL_DATA_WIDTH_HALFWORD;
   dma_init_struct.peripheral_inc_enable = FALSE;
   dma_init_struct.priority = DMA_PRIORITY_LOW;
@@ -181,7 +184,8 @@ void wk_dma1_channel3_init(void)
    *     --void DMA1_Channel3_2_IRQHandler(void)
    */ 
   /* add user code begin dma1_channel3 1 */
-    nvic_irq_enable(DMA1_Channel3_2_IRQn, 3, 2);
+    dma_channel_enable(DMA1_CHANNEL3, TRUE);
+    //nvic_irq_enable(DMA1_Channel3_2_IRQn, 4, 0);
   /* add user code end dma1_channel3 1 */
 }
 
@@ -199,9 +203,9 @@ void wk_dma_channel_config(dma_channel_type* dmax_channely, uint32_t peripheral_
 
   /* add user code end dma_channel_config 0 */
 
-  dmax_channely->dtcnt = buffer_size;
-  dmax_channely->paddr = peripheral_base_addr;
-  dmax_channely->maddr = memory_base_addr;
+  dmax_channely->dtcnt = buffer_size;//dtcnt = Data Transfer Count（数据传输计数寄存器）
+  dmax_channely->paddr = peripheral_base_addr;//paddr = Peripheral Address（外设地址寄存器）
+  dmax_channely->maddr = memory_base_addr;//maddr = Memory Address（内存地址寄存器）
 
   /* add user code begin dma_channel_config 1 */
 

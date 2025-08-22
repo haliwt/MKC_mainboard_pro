@@ -145,6 +145,7 @@ int main(void)
   /* add user code begin 2 */
     tmr_counter_enable(TMR17, TRUE);
 	bsp_init();
+   adc_ordinary_software_trigger_enable(ADC1, TRUE);
     freertos_handler();
   /* add user code end 2 */
 

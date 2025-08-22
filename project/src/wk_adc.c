@@ -73,14 +73,17 @@ void wk_adc1_init(void)
 
   /* adc_settings------------------------------------------------------------------- */
   adc_base_default_para_init(&adc_base_struct);
-  adc_base_struct.sequence_mode = FALSE;
-  adc_base_struct.repeat_mode = FALSE;
+  adc_base_struct.sequence_mode = TRUE;//FALSE;
+  adc_base_struct.repeat_mode = TRUE ;//FALSE;
   adc_base_struct.data_align = ADC_RIGHT_ALIGNMENT;
-  adc_base_struct.ordinary_channel_length = 1;
+  adc_base_struct.ordinary_channel_length = 3;//1; need ADC1 switch three channel .
   adc_base_config(ADC1, &adc_base_struct);
 
   /* adc_ordinary_conversionmode---------------------------------------------------- */
-  adc_ordinary_channel_set(ADC1, ADC_CHANNEL_8, 1, ADC_SAMPLETIME_1_5);
+  adc_ordinary_channel_set(ADC1, ADC_CHANNEL_6, 1, ADC_SAMPLETIME_7_5 );
+  adc_ordinary_channel_set(ADC1, ADC_CHANNEL_8, 2, ADC_SAMPLETIME_7_5 );
+  adc_ordinary_channel_set(ADC1, ADC_CHANNEL_9, 3, ADC_SAMPLETIME_7_5 );
+  
 
   adc_ordinary_conversion_trigger_set(ADC1, ADC12_ORDINARY_TRIG_SOFTWARE, TRUE);
 
@@ -99,7 +102,7 @@ void wk_adc1_init(void)
   while(adc_calibration_status_get(ADC1));
 
   /* add user code begin adc1_init 3 */
-
+  //adc_ordinary_software_trigger_enable(ADC1, TRUE);
   /* add user code end adc1_init 3 */
 }
 

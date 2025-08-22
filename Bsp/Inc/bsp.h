@@ -76,7 +76,7 @@ typedef struct {
     uint8_t mode;
     uint8_t error_code;
     // ... 其他系统状态
-   uint8_t gTimer_1s_flag;
+   uint8_t gTimer_adc_counter;
 } system_param_t;
 
 extern system_param_t g_pro;

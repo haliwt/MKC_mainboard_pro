@@ -260,7 +260,11 @@ void DMA1_Channel1_IRQHandler(void)
 void DMA1_Channel3_2_IRQHandler(void)
 {
   /* add user code begin DMA1_Channel3_2_IRQ 0 */
-
+  if(dma_interrupt_flag_get(DMA1_FDT1_FLAG) != RESET)
+  {
+    dma_flag_clear(DMA1_FDT1_FLAG);
+    dma_trans_complete_flag=1;
+  }
   /* add user code end DMA1_Channel3_2_IRQ 0 */
   /* add user code begin DMA1_Channel3_2_IRQ 1 */
 

@@ -20,7 +20,7 @@ void power_on_handler(void)
     case 0:
       power_off_step=0;
       power_on_next_step =0;
-      g_pro.gTimer_1s_flag=0;
+      g_pro.gTimer_adc_counter=0;
       power_on_step =1;
 
     break;
@@ -67,9 +67,10 @@ void power_on_handler(void)
 
      case 2:
 
-        if(g_pro.gTimer_1s_flag > 4){ //send temperature value to dispalboard
-            g_pro.gTimer_1s_flag=0;
-            sendData_to_dispBoard(0x1A,32);
+        if(g_pro.gTimer_adc_counter> 4){ //send temperature value to dispalboard
+            g_pro.gTimer_adc_counter=0;
+            //sendData_to_dispBoard(0x1A,32);
+            adcRead_voltageValue();
             vTaskDelay(pdMS_TO_TICKS(10));
         }
         
