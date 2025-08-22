@@ -76,6 +76,35 @@ void sendData_to_dispBoard(uint8_t notice,uint8_t data)
         // }
 	
 }
+
+/********************************************************************************
+    **
+    *Function Name:void SendWifiData_To_Cmd(uint8_t cmd,uint8_t data)
+    *Function : commad order , data -command type
+    *Input Ref: commad order , data -command type
+    *Return Ref:NO
+    *
+*******************************************************************************/
+void sendCmd_to_dispBoard(uint8_t cmd,uint8_t data)
+{
+        ack_t.ack_buf[0]=0x5A; //head : main board 0x5A
+        ack_t.ack_buf[1]=0x10; //main board device No: 0x10
+        ack_t.ack_buf[2]=cmd; //command type: fan speed of value 
+        ack_t.ack_buf[3]= data; // don't data ,onlay is command order,recieve data is 1byte .
+       
+        ack_t.ack_buf[4] = 0xFE;
+        ack_t.ack_buf[5] = bcc_check(ack_t.ack_buf,4);
+        
+        ack_t.data_length = 6;
+        usart1_dma_send(ack_t.ack_buf,6);
+        // if(transferSize)
+        // {
+        //     while(transOngoingFlag); //UART interrupt transmit flag ,disable one more send data.
+        //     transOngoingFlag=1;
+        //     HAL_UART_Transmit_IT(&huart1,outputBuf,transferSize);
+        // }
+	
+}
 /**
  * @brief  :  处理解析帧函数
  * @note    

@@ -22,3 +22,13 @@ void buzzer_sound(void)
   tmr_output_channel_immediately_set(TMR2, TMR_SELECT_CHANNEL_1,FALSE);
   tmr_counter_enable(TMR2, FALSE);
 }
+
+
+void buzzer_on_sound(void)
+{
+  // tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, 125);
+  tmr_output_channel_immediately_set(TMR2, TMR_SELECT_CHANNEL_1,FALSE);
+  tmr_counter_enable(TMR2, FALSE);
+
+
+}

@@ -43,8 +43,6 @@ void adcRead_voltageValue(void)
 
 }
 
-   
-
 /**
  * 
  * @brief: read ADC switch result voltage value 

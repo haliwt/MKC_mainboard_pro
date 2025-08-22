@@ -350,6 +350,20 @@ static void getParseCmd_displayBoard(void)
 
     /* code */
    break;
+
+   case 0x06: //buzzer sound 
+     if(g_pro.power_on == power_on){
+      if(sm.cmd_fun_code==0x01){//buzzer sound on
+            buzzer_sound() ; 
+
+      }
+      else{
+          buzzer_on_sound();
+      }
+    }
+
+
+   break;
    
    default:
     break;
