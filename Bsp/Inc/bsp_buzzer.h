@@ -3,7 +3,7 @@
 #include "at32f425.h"
 
 
-
+void buzzer_sound(void);
 
 #endif 
 

@@ -45,8 +45,9 @@ void usart1_dma_rx_handler(void)
        
 		//protocol_sm_feed(&sm,); // 状态机解析
         // protocol_sm_feed(sm,frame_buf, rx_len);
-        if(rx_len==6)
+        if(rx_len==6){
            protocol_sm_cmd_input(frame_buf,rx_len);
+        }
         else if(rx_len > 6){
 
              protocol_sm_data_input(frame_buf,rx_len);

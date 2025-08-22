@@ -224,7 +224,7 @@ void DMA1_Channel1_IRQHandler(void)
     {
         dma_flag_clear(DMA1_FDT1_FLAG);
      
-		 g_pro.uart1_rx_dma_full = 0; 
+		
     }
 
     // 错误

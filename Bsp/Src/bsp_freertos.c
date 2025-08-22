@@ -100,6 +100,7 @@ static void vTaskMsgPro(void *pvParameters)
         if(power_on_flag == 0)
         {
           power_on_flag++;
+          buzzer_sound();
           printf("vTaskMsgPro: fan_group_open \r\n");
         }
         

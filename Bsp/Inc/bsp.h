@@ -39,6 +39,7 @@
 #include "bsp_rxdma_usart.h"
 #include "bsp_txdma_usart.h"
 #include "bsp_protocol_sm.h"
+#include "bsp_power.h"
 
 #include "bsp_freertos.h"
 #include "interrupt_manager.h"
@@ -65,19 +66,16 @@
 
 	
 
+// system.h
+typedef struct {
+    uint8_t power_on;   // 开机标志
+    uint8_t mode;
+    uint16_t error_code;
+    // ... 其他系统状态
+   uint8_t gTimer_1s_flag;
+} system_param_t;
 
-typedef struct _PROCESS_T{
-
-  uint8_t rx_length; //接收数据长度
-  uint8_t rx_complete_flag; //接收完成标志
-  
-  //timer param 
-   uint8_t gTimer_1s_flag; //1s flag
-  uint8_t uart1_rx_dma_full; 
-
-
-}PROCESS_TYPEDEF;
-extern PROCESS_TYPEDEF g_pro;
+extern system_param_t g_pro;
 
 
 
