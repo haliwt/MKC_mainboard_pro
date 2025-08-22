@@ -27,8 +27,8 @@ void usart1_dma_rx_handler(void)
     #else
     uint8_t first_len;
         
-      //  if(rx_ready ==1){
-        //    rx_ready=0;
+        if(rx_ready ==1){
+            rx_ready=0;
         if (rx_pos >= last_pos) {
             memcpy(frame_buf,(const uint8_t *) &dma_rx_buf[last_pos], rx_len);
            
@@ -52,7 +52,7 @@ void usart1_dma_rx_handler(void)
              protocol_sm_data_input(frame_buf,rx_len);
         }
         counter_flag++;
- //   }
+    }
 
     #endif
   
