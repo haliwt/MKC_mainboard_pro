@@ -48,7 +48,10 @@ void usart1_dma_rx_handler(void)
         if(rx_len==6){
            protocol_sm_cmd_input(frame_buf,rx_len);
         }
-        else if(rx_len > 6){
+        else if(rx_len==7){
+           protocol_sm_ack_input(frame_buf,rx_len);
+        }
+        else if(rx_len > 7){
 
              protocol_sm_data_input(frame_buf,rx_len);
         }
@@ -68,10 +71,6 @@ void usart1_dma_rx_handler(void)
  * @param   None                
  * @retval  None
  */
-
-
-
-
 void usart1_irq_callback_process_rx(void)
 {
   #if 0

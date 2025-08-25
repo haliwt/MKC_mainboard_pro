@@ -304,7 +304,6 @@ void USART1_IRQHandler(void)
 {
   /* add user code begin USART1_IRQ 0 */
   // 检测空闲中断
-     volatile uint32_t tmp;
     if(usart_flag_get(USART1, USART_IDLEF_FLAG) != RESET)
     {
        // 按顺序读 STS 和 DR 清 IDLE 标志

@@ -38,8 +38,4 @@ void usart1_dma_send(const uint8_t *data, uint16_t len)
 
     usart_dma_transmitter_enable(USART1, TRUE);
 
-    
-
-   
-  
-}
+    }

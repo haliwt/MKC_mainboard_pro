@@ -1,9 +1,15 @@
 #include "bsp.h"
 
+#define ACK_HEADER   0x5A  //main board answer cmd header 
+#define ACK_DEVICE_ID    0x10
+#define ACK_CMD        0xFF
+#define ACK_TAIL       0xFE
+
 ProtocolSM sm;
 uint8_t calc ;
 
 static void getParseCmd_displayBoard(void);
+static void ack_to_dispboard_handler(void);
 
 static uint8_t calc_bcc(const uint8_t *buf, uint8_t len)
 {
@@ -157,15 +163,12 @@ bool protocol_sm_data_input(const uint8_t *data,uint8_t data_length)
         }
       
 
-    case SM_WAIT_CMD_NOTICE:
+     case SM_WAIT_CMD_NOTICE:
        sm.cmd_notice =data[2];
        sm.state = SM_WAIT_FUN_JUDGE;
       sm.idx = 3;
 	  
-            
-    
-
-    case SM_WAIT_FUN_JUDGE:
+      case SM_WAIT_FUN_JUDGE:
        //sm.cmd_fun_code =data[3];
        if(data[3] == FUNC_DATA){
           sm.state = SM_WAIT_DATA_LENGHT;
@@ -314,6 +317,102 @@ bool protocol_sm_data_input(const uint8_t *data,uint8_t data_length)
        
     }
 }
+/**
+ * @brief  : parse protocol is answer command .
+ * @note    receive data is length more 6 
+ * @param   sm: 状态机实例  
+ * @param   byte: 输入字节
+ * @retval  true: 完整帧已解析，false: 未解析到完整
+ */
+bool protocol_sm_ack_input(const uint8_t *data,uint8_t data_length) 
+{
+  if (data_length == 7) {
+    switch (sm.state) {
+      case SM_WAIT_HEADER:
+        if (data[0] == ACK_HEADER) {
+          sm.idx = 1;
+          sm.state = SM_WAIT_FIXED;
+        } else {
+          return FALSE;
+        }
+        // fall through
+
+      case SM_WAIT_FIXED:
+        if (data[1] == ACK_DEVICE_ID) {
+          sm.state = SM_WAIT_CMD_NOTICE;
+          sm.idx = 2;
+        } else {
+          sm.idx = 0;
+          sm.data_counter = 0;
+          sm.state = SM_WAIT_COPY_HEADER;
+          return FALSE;
+        }
+        // fall through
+
+      case SM_WAIT_COPY_HEADER:
+        //sm.cmd_notice = data[2];
+        if (data[2] == ACK_CMD) { // only process ack signal
+          sm.state = SM_WAIT_COPY_CMD_NOTICE;
+          sm.idx = 3;
+        } else {
+          sm.idx = 0;
+          sm.data_counter = 0;
+          sm.state = SM_WAIT_HEADER;
+          return FALSE;
+        }
+        // fall through
+      case SM_WAIT_COPY_CMD_NOTICE:
+
+         sm.cmd_notice = data[3];
+         sm.state = SM_WAIT_COPY_FUNC_CODE;
+         sm.idx = 4;
+    
+
+      case SM_WAIT_COPY_FUNC_CODE: //ACK cmd or noticer or data
+        sm.cmd_fun_code = data[4];
+        sm.state = SM_WAIT_CMD_TAIL;
+        sm.idx = 5;
+        // fall through
+
+  
+
+      case SM_WAIT_CMD_TAIL:
+        if(data[5] == FRAME_TAIL) {
+          sm.state = SM_WAIT_CMD_BCC;
+          sm.idx = 6;
+        } 
+        else {
+          sm.idx = 0;
+          sm.data_counter = 0;
+          sm.state = SM_WAIT_HEADER;
+          return FALSE;
+        }
+        // fall through
+
+      case SM_WAIT_CMD_BCC:
+        sm.bcc_data = data[6];
+        calc = calc_bcc(data, 6); //bcc length = length -1 
+        if (sm.bcc_data == calc) {
+          sm.idx = 0;
+          sm.data_counter = 0;
+          sm.state = SM_WAIT_HEADER;
+          // 可以在这里处理应答信号
+         // printf("ACK signal received!\r\n");
+          return TRUE;
+        } 
+        else {
+          sm.idx = 0;
+          sm.data_counter = 0;
+          sm.state = SM_WAIT_HEADER;
+          printf("receive ACK fail !!!\r\n");
+          return FALSE;
+        }
+        break;
+    }
+    return FALSE;
+  }
+  return FALSE;
+}
 
 /**
  * @brief  : 回调函数
@@ -344,7 +443,7 @@ static void getParseCmd_displayBoard(void)
         }
         else{
            buzzer_sound() ; 
-           responseCmd_fun(0x0,sm.cmd_fun_code);
+           responseCmd_fun(0x01,sm.cmd_fun_code);
            g_pro.power_on = power_off;  
         }
 
@@ -372,3 +471,29 @@ static void getParseCmd_displayBoard(void)
 
 }
 
+/**
+ * @brief  : parse protocol form display board 
+ * @note    
+ * @param   
+ * @param   
+ * @retval  
+ */
+static void ack_to_dispboard_handler(void)
+{
+   switch( sm.cmd_notice ){
+
+
+     case 0x01:
+
+    break;
+
+
+
+
+
+
+   }
+
+
+
+}

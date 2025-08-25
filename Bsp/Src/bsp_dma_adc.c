@@ -43,13 +43,13 @@ void adcRead_voltageValue(void)
      Get_Ntc_Resistance_Temperature_Handler(adc_t.adc_temperature);
      disp_temp= getNtc_linearTemperature_value();
 
-      Get_Ntc_Resistance_Temperature_Handler(adc_t.adc_atomization);
-      disp_atom= getNtc_linearTemperature_value();
+     // Get_Ntc_Resistance_Temperature_Handler(adc_t.adc_atomization);
+     // disp_atom= getNtc_linearTemperature_value();
 
 
      //printf("adc_det = %d\r\n",adc_t.adc_detected);
      printf("adc_temp = %d\r\n",disp_temp);
-     printf("adc_atom = %d\r\n",disp_atom);
+   //  printf("adc_atom = %d\r\n",disp_atom);
 
      
      

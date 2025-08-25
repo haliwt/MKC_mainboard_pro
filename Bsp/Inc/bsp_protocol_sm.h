@@ -23,7 +23,10 @@ typedef enum {
     SM_WAIT_CMD_TAIL=9,
     SM_WAIT_CMD_BCC = 0x0A,
     SM_WAIT_TAIL=0x0B,
-    SM_WAIT_BCC=0X0C
+    SM_WAIT_BCC=0X0C,
+    SM_WAIT_COPY_HEADER =0X0D,
+    SM_WAIT_COPY_CMD_NOTICE=0X0E,
+    SM_WAIT_COPY_FUNC_CODE=0x0F
 } ProtocolState;
 
 typedef struct ProtocolSM { //SM -state machine
@@ -45,6 +48,8 @@ typedef struct ProtocolSM { //SM -state machine
 void protocol_sm_init(void);
 bool protocol_sm_cmd_input(const uint8_t *data, uint8_t length);
 bool protocol_sm_data_input(const uint8_t *data,uint8_t data_length) ;
+
+bool protocol_sm_ack_input(const uint8_t *data,uint8_t data_length) ;
 
 void frame_parse_respond_handler(ProtocolSM sm);
 
