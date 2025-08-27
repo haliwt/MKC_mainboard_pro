@@ -47,6 +47,8 @@
 
 #define  USE_FreeRTOS      1
 
+#define  DEBUG_FLAG        1
+
 
 #if USE_FreeRTOS == 1
 	#define DISABLE_INT()    taskENTER_CRITICAL()
@@ -70,10 +72,16 @@ typedef enum{
 
 }power_state_enum;
 	
+typedef enum{
+  close,
+  open
+}fun_state_enum;
 
 // system.h
 typedef struct {
     uint8_t power_on;   // 开机标志
+    uint8_t plasma_flag;
+    uint8_t set_temp_value;
     uint8_t mode;
     uint8_t error_code;
     // ... 其他系统状态

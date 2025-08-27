@@ -16,33 +16,27 @@ typedef enum {
     SM_WAIT_CMD_NOTICE=2,
     SM_WAIT_FUN_JUDGE=3,
     SM_WAIT_DATA_LENGHT=4,
-    SM_WAIT_DATA_ONE =5,
-    SM_WAIT_DATA_TWO =6,
-    SM_WAIT_DATA_THREE= 7 ,
-    SM_WAIT_DATA_FOUR =8,
-    SM_WAIT_CMD_TAIL=9,
-    SM_WAIT_CMD_BCC = 0x0A,
-    SM_WAIT_TAIL=0x0B,
-    SM_WAIT_BCC=0X0C,
-    SM_WAIT_COPY_HEADER =0X0D,
-    SM_WAIT_COPY_CMD_NOTICE=0X0E,
-    SM_WAIT_COPY_FUNC_CODE=0x0F
+    SM_WAIT_DATA =5,
+    SM_WAIT_CMD_TAIL=6,
+    SM_WAIT_CMD_BCC = 7,
+    SM_WAIT_TAIL=8,
+    SM_WAIT_BCC=9,
+    SM_WAIT_COPY_HEADER =0X0A,
+    SM_WAIT_COPY_CMD_NOTICE=0X0B,
+    SM_WAIT_COPY_FUNC_CODE=0x0C
 } ProtocolState;
 
 typedef struct ProtocolSM { //SM -state machine
     ProtocolState state;
-    //uint8_t buf[ MAX_DATA_LEN]; // 头+ID+cmd+func+data+尾/BCC
     uint8_t data_buf[4];
     uint8_t idx;
     void (*on_frame_ready)(struct ProtocolSM sm); // 可选回调函数指针
-    uint8_t expected_len;
     uint8_t cmd_notice;
     uint8_t cmd_fun_code;
-    uint8_t cmd_execute_code;
+  
     uint8_t  bcc_data;
     uint8_t   data_length;
-    uint8_t  data_counter;
-    uint8_t  data_to_tail;
+  
 } ProtocolSM;
 
 void protocol_sm_init(void);

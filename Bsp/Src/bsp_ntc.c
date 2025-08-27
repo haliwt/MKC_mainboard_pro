@@ -73,7 +73,6 @@ typedef struct _ntc_t{
 ntc_res_t ntc_t;
 
 
-
 int8_t left_point =0;
 int8_t right_point ;
 
@@ -1178,22 +1177,36 @@ static uint8_t Calculate_Display_Temperature_Value(const uint16_t *pt,uint8_t ke
 *************************************************************************************************/
 uint8_t ntc_res_linear_value(uint8_t ntc_value)
 {
+    
     static uint8_t current_value = 0; // 当前显示值
+	static uint8_t compare_up_counter,compare_down_counter;
     static uint8_t init_done = 0;
     int16_t diff;
+
 
     if (!init_done) {
         current_value = ntc_value;
         init_done = 1;
     }
+    
 
-     diff = (int16_t)ntc_value - (int16_t)current_value;
+     diff = (int16_t) ntc_value - (int16_t) current_value;
 
     if (diff > 0) {
-        current_value++; // 每次只加 1
+    	compare_up_counter++;
+    	compare_down_counter=0;
+       if(compare_up_counter > 2){
+       	  compare_up_counter=0;
+          current_value++; // 每次只加 1
+        }
     } 
     else if (diff < 0) {
-        current_value--; // 每次只减 1
+    	compare_down_counter++;
+    	compare_up_counter=0;
+    	if(compare_down_counter > 2){
+    	   compare_down_counter=0;
+           current_value--; // 每次只减 1
+        }
     }
     // diff == 0 时，不变
 

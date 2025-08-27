@@ -12,7 +12,9 @@ void buzzer_sound(void)
   tmr_output_struct.occ_polarity = TMR_OUTPUT_ACTIVE_HIGH;
   tmr_output_struct.oc_idle_state = FALSE;
   tmr_output_struct.occ_idle_state = FALSE;
+  /* 2. 应用到定时器通道 */
   tmr_output_channel_config(TMR2, TMR_SELECT_CHANNEL_1, &tmr_output_struct);
+  /* 3. 设置比较值（占空比） */
   tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, 125);
   tmr_output_channel_immediately_set(TMR2, TMR_SELECT_CHANNEL_1, TRUE);
   tmr_counter_enable(TMR2, TRUE);
@@ -20,7 +22,7 @@ void buzzer_sound(void)
   vTaskDelay(pdMS_TO_TICKS(20));
  // tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, 125);
   tmr_output_channel_immediately_set(TMR2, TMR_SELECT_CHANNEL_1,FALSE);
-  tmr_counter_enable(TMR2, FALSE);
+  tmr_counter_enable(TMR2, FALSE); //stop timer output pwm 
 }
 
 
@@ -32,3 +34,4 @@ void buzzer_on_sound(void)
 
 
 }
+

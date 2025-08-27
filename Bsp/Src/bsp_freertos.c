@@ -60,26 +60,6 @@ void freertos_handler(void)
 
 }
 
-// /**********************************************************************************************************
-//  * 
-// *	Function Name: vTaskStart
-// *	Function : only one freeRTOS task 
-// *	Input Ref:NO
-// *	Return Ref:NO
-// *   
-// ************************************ifi**********************************************************************/
-//  static void vTaskWifiPro(void *pvParameters)
-//  {
-  
-//       while(1)
-//       {
-       
-//         vTaskDelay(pdMS_TO_TICKS(1000));
-//      }
-
-
-//  }
-
 /**
  * @brief  :  static void vTaskStart(void *pvParameters)创建数杮处睆任务，优先级为中筄1�71�1�77
  * @note    任务内部使用队列接收数杮，需先初始化队列
@@ -101,9 +81,7 @@ static void vTaskMsgPro(void *pvParameters)
    if(g_pro.power_on==power_on){
       
       power_on_handler();
-
-
-   }
+    }
    else{
 
      power_off_handler();

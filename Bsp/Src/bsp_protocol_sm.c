@@ -10,7 +10,15 @@ uint8_t calc ;
 
 static void getParseCmd_displayBoard(void);
 static void ack_to_dispboard_handler(void);
+static void getParseData_displayBoard(void);
 
+/**
+ * @brief  : BCC of check funtion
+ * @note    receive data is length more 6 
+ * @param   sm: 状态机实例  
+ * @param   byte: 输入字节
+ * @retval   check code
+ */
 static uint8_t calc_bcc(const uint8_t *buf, uint8_t len)
 {
     uint8_t bcc=0 ,i;
@@ -64,7 +72,7 @@ bool protocol_sm_cmd_input(const uint8_t *data,uint8_t data_length)
         }
         else{
            sm.idx = 0;
-           sm.data_counter=0;
+         
            sm.state = SM_WAIT_HEADER;  
             return  FALSE;
         }
@@ -91,7 +99,7 @@ bool protocol_sm_cmd_input(const uint8_t *data,uint8_t data_length)
         }
         else{
            sm.idx = 0;
-           sm.data_counter=0;
+      
            sm.state = SM_WAIT_HEADER;  
            return FALSE;  
         }
@@ -104,7 +112,7 @@ bool protocol_sm_cmd_input(const uint8_t *data,uint8_t data_length)
       calc =  calc_bcc(data, 5);
       if(sm.bcc_data == calc){
         sm.idx = 0;
-        sm.data_counter=0;
+     
         sm.state = SM_WAIT_HEADER;    
         getParseCmd_displayBoard();
         return  TRUE;
@@ -112,7 +120,7 @@ bool protocol_sm_cmd_input(const uint8_t *data,uint8_t data_length)
       }
       else{
         sm.idx = 0;
-        sm.data_counter=0;
+   
         sm.state = SM_WAIT_HEADER;  
          printf("receive data fail !!!\r\n");
         return FALSE;
@@ -133,7 +141,7 @@ bool protocol_sm_cmd_input(const uint8_t *data,uint8_t data_length)
  */
 bool protocol_sm_data_input(const uint8_t *data,uint8_t data_length) 
 {
-	  
+	uint8_t i;  
 	switch(sm.state){
     case SM_WAIT_HEADER: //0x00 --> 0xA5 display board
         if (data[0]== FRAME_HEADER) {
@@ -157,7 +165,6 @@ bool protocol_sm_data_input(const uint8_t *data,uint8_t data_length)
         }
         else{
            sm.idx = 0;
-           sm.data_counter=0;
            sm.state = SM_WAIT_HEADER;  
             return  FALSE;
         }
@@ -169,15 +176,14 @@ bool protocol_sm_data_input(const uint8_t *data,uint8_t data_length)
       sm.idx = 3;
 	  
       case SM_WAIT_FUN_JUDGE:
-       //sm.cmd_fun_code =data[3];
-       if(data[3] == FUNC_DATA){
+       if(data[3] == FUNC_DATA){ //adjust is data . 0x0F
           sm.state = SM_WAIT_DATA_LENGHT;
           sm.idx = 4;
 		  
        }
        else{
             sm.idx = 0;
-           sm.data_counter=0;
+         
            sm.state = SM_WAIT_HEADER;  
            return  FALSE;
        }
@@ -185,127 +191,60 @@ bool protocol_sm_data_input(const uint8_t *data,uint8_t data_length)
     
      //data length 
     case SM_WAIT_DATA_LENGHT:
-      sm.data_length =data[4];
-      sm.state = SM_WAIT_DATA_ONE;
+      sm.data_length =data[4]; //data don't function code.
+      sm.state = SM_WAIT_DATA;
       sm.idx = 5;
 
     
 
-    case SM_WAIT_DATA_ONE:
-      sm.data_buf[sm.data_counter]=data[5];
-      sm.data_counter++;
-      if(sm.data_counter == sm.data_length){
-        sm.state = SM_WAIT_DATA_TWO;
-        sm.data_to_tail = SM_WAIT_TAIL ;
-        sm.idx = 6;
-      }
-      else{
-        sm.data_to_tail=0;
-        sm.state = SM_WAIT_DATA_TWO;
-        sm.idx = 6;
+    case SM_WAIT_DATA:
 
+      for(i=0;i< sm.data_length; i++){
+           sm.data_buf[i]=data[5+i];
+     
       }
+      sm.state =SM_WAIT_TAIL;
+      
+      sm.idx = 5 + sm.data_length;
+     
 
-    
-
-    
-    case SM_WAIT_DATA_TWO:
-    
-       
-    if(sm.data_to_tail==0){
-   
-      sm.data_buf[sm.data_counter]=data[6];
-      sm.data_counter++;
-      if(sm.data_counter == sm.data_length){
-        sm.state = SM_WAIT_DATA_THREE;
-        sm.data_to_tail = SM_WAIT_TAIL ;
-        sm.idx = 7;
-      }
-      else{
-        sm.state = SM_WAIT_DATA_THREE;
-        sm.idx = 7;
-      }
-    }
-    else{  
+    case SM_WAIT_TAIL:
+  
       
      if (data[sm.idx] == FRAME_TAIL) {
            
-           sm.state = SM_WAIT_DATA_THREE;
-          sm.data_to_tail = SM_WAIT_BCC ;
-           sm.idx = sm.idx + 1;//sm->idx + 1;
-		  // sm->idx++;
-        }
-        else{
-           sm.data_to_tail = 0;
-           sm.idx = 0;
-           sm.data_counter=0;
-           sm.state = SM_WAIT_HEADER;  
-           return FALSE;  
-        }
-    }
-
-    case  SM_WAIT_DATA_THREE: //7
-
-        if(sm.data_to_tail == SM_WAIT_TAIL){
-        if (data[sm.idx] == FRAME_TAIL) {
-           
            sm.state = SM_WAIT_BCC;
-           sm.data_to_tail = SM_WAIT_BCC ;
+    
            sm.idx = sm.idx + 1;//sm->idx + 1;
-		  // sm->idx++;
+	
         }
-        }
-        else if(sm.data_to_tail==0){
-           sm.data_to_tail = 0;
+        else{
+         
            sm.idx = 0;
-           sm.data_counter=0;
+        
            sm.state = SM_WAIT_HEADER;  
            return FALSE;  
         }
-        else if(sm.data_to_tail == SM_WAIT_BCC){
-        
-        sm.bcc_data = data[sm.idx] ;
     
-        calc =  calc_bcc(data, sm.idx);
-        if(sm.bcc_data == calc){
-            sm.idx = 0;
-            sm.data_counter=0;
-             sm.data_to_tail=0;
-            sm.state = SM_WAIT_HEADER; 
-            printf("receive data success > 6 !!!\r\n");   
-            return true;
-
-        }
-        else{
-                printf("receive data fail <6  !!!\r\n");
-                sm.idx = 0;
-            sm.data_counter=0;
-            sm.data_to_tail=0;
-            sm.state = SM_WAIT_HEADER;  
-            return FALSE;  
-
-        }
-      }
-
     case SM_WAIT_BCC:
-
         sm.bcc_data = data[sm.idx] ;
     
         calc =  calc_bcc(data, sm.idx);
         if(sm.bcc_data == calc){
             sm.idx = 0;
-            sm.data_counter=0;
-             sm.data_to_tail=0;
+      
             sm.state = SM_WAIT_HEADER; 
-            printf("receive data success > 6 !!!\r\n");   
+			getParseData_displayBoard();
+           // printf("receive data success > 6 !!!\r\n");   
             return true;
 
         }
         else{
+		  #if DEBUG_FLAG
             printf("receive data fail >6  !!!\r\n");
+		  #endif 
             sm.idx = 0;
-            sm.data_counter=0;
-            sm.data_to_tail=0;
+        
             sm.state = SM_WAIT_HEADER;  
             return FALSE;  
 
@@ -343,7 +282,7 @@ bool protocol_sm_ack_input(const uint8_t *data,uint8_t data_length)
           sm.idx = 2;
         } else {
           sm.idx = 0;
-          sm.data_counter = 0;
+        
           sm.state = SM_WAIT_COPY_HEADER;
           return FALSE;
         }
@@ -356,7 +295,7 @@ bool protocol_sm_ack_input(const uint8_t *data,uint8_t data_length)
           sm.idx = 3;
         } else {
           sm.idx = 0;
-          sm.data_counter = 0;
+     
           sm.state = SM_WAIT_HEADER;
           return FALSE;
         }
@@ -383,7 +322,7 @@ bool protocol_sm_ack_input(const uint8_t *data,uint8_t data_length)
         } 
         else {
           sm.idx = 0;
-          sm.data_counter = 0;
+      
           sm.state = SM_WAIT_HEADER;
           return FALSE;
         }
@@ -394,7 +333,7 @@ bool protocol_sm_ack_input(const uint8_t *data,uint8_t data_length)
         calc = calc_bcc(data, 6); //bcc length = length -1 
         if (sm.bcc_data == calc) {
           sm.idx = 0;
-          sm.data_counter = 0;
+      
           sm.state = SM_WAIT_HEADER;
           // 可以在这里处理应答信号
          // printf("ACK signal received!\r\n");
@@ -402,7 +341,7 @@ bool protocol_sm_ack_input(const uint8_t *data,uint8_t data_length)
         } 
         else {
           sm.idx = 0;
-          sm.data_counter = 0;
+      
           sm.state = SM_WAIT_HEADER;
           printf("receive ACK fail !!!\r\n");
           return FALSE;
@@ -415,13 +354,37 @@ bool protocol_sm_ack_input(const uint8_t *data,uint8_t data_length)
 }
 
 /**
- * @brief  : 回调函数
- * @note    该函数会根据输入字节更新状态机状态，并处理完整帧
+ * @brief  : redeive form display board data don't command
+ * @note    
  * @param   sm: 状态机实例  
  * @param   byte: 输入字节
- * @retval  true: 完整帧已解析，false: 未解析到完整
+ * @retval 
  */
+static void getParseData_displayBoard(void)
+{
+   switch (sm.cmd_notice)
+   {
+   case 0x1B : //power on or off
+        if(sm.data_length==1){
+           g_pro.set_temp_value = sm.data_buf[0];
+        }
 
+    /* code */
+   break;
+
+   case 0xFE:
+
+       if(sm.data_length==3){
+
+
+       }
+
+   break;
+
+  }
+
+
+}
 
 /**
  * @brief  : parse protocol form display board 
@@ -450,6 +413,21 @@ static void getParseCmd_displayBoard(void)
     /* code */
    break;
 
+   case 0x03://plasma cmd
+    if(sm.cmd_fun_code==0x01){//power on
+           buzzer_sound() ; 
+           responseCmd_fun(0x03,sm.cmd_fun_code);
+           g_pro.plasma_flag =open;
+    }
+    else{
+           buzzer_sound() ; 
+           responseCmd_fun(0x03,sm.cmd_fun_code);
+           g_pro.plasma_flag =close;
+    }
+
+
+   break;
+
    case 0x06: //buzzer sound 
      if(g_pro.power_on == power_on){
       if(sm.cmd_fun_code==0x01){//buzzer sound on
@@ -460,6 +438,21 @@ static void getParseCmd_displayBoard(void)
           buzzer_on_sound();
       }
     }
+
+
+   break;
+
+  case 0x16: //buzzer sound with answer signal 
+     if(g_pro.power_on == power_on){
+      if(sm.cmd_fun_code==0x01){//buzzer sound on
+            buzzer_sound() ; 
+            responseCmd_fun(0x16,sm.cmd_fun_code);
+      }
+      else{
+          buzzer_on_sound();
+          responseCmd_fun(0x16,0x00);
+      }
+  }
 
 
    break;

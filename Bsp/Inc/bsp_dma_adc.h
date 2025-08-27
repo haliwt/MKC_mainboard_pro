@@ -10,7 +10,7 @@ extern  uint16_t adc_buf[ADC_CHANNEL_COUNT];
 
  void adcRead_voltageValue(void);
 
-
+uint8_t readAmbinet_temp_value(void);
 
 #endif 
 

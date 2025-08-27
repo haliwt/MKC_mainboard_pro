@@ -39,7 +39,7 @@
 void wk_tmr1_init(void)
 {
   /* add user code begin tmr1_init 0 */
-  // ultrasonic is pwm is 25KHZ
+  // ultrasonic atomization is pwm 108KHz
   /* add user code end tmr1_init 0 */
 
   gpio_init_type gpio_init_struct;
@@ -66,7 +66,7 @@ void wk_tmr1_init(void)
   tmr_clock_source_div_set(TMR1, TMR_CLOCK_DIV1);
   tmr_repetition_counter_set(TMR1, 0);
   tmr_period_buffer_enable(TMR1, FALSE);
-  tmr_base_init(TMR1, 39, 95);
+  tmr_base_init(TMR1, 887, 0); // Divider value = 0, Period Value = 887 F= 108KHz
 
   /* configure primary mode settings */
   tmr_sub_sync_mode_set(TMR1, FALSE);
@@ -162,7 +162,7 @@ void wk_tmr2_init(void)
   tmr_output_channel_immediately_set(TMR2, TMR_SELECT_CHANNEL_1, FALSE);
 
 
-  tmr_counter_enable(TMR2, TRUE);
+ // tmr_counter_enable(TMR2, TRUE); //WT.EDIT 
 
   /* add user code begin tmr2_init 2 */
 
