@@ -364,7 +364,7 @@ static void getParseData_displayBoard(void)
 {
    switch (sm.cmd_notice)
    {
-   case 0x1B : //power on or off
+   case 0x1B : //set temperarue value .cmd=0x1B.
         if(sm.data_length==1){
            g_pro.set_temp_value = sm.data_buf[0];
         }

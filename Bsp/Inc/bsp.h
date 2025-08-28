@@ -40,6 +40,7 @@
 #include "bsp_txdma_usart.h"
 #include "bsp_protocol_sm.h"
 #include "bsp_ntc.h"
+#include "bsp_temp.h"
 #include "bsp_power.h"
 
 #include "bsp_freertos.h"

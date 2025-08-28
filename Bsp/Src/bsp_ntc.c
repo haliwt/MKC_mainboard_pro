@@ -20,7 +20,7 @@ uint8_t array_subscript;
 
 uint8_t disp_temp_degree;
 uint8_t search_key;
-
+uint8_t compare_up_counter,compare_down_counter;
 
 static int8_t  Binary_Search(const uint8_t *array ,uint8_t key,uint8_t length);
 
@@ -1179,7 +1179,7 @@ uint8_t ntc_res_linear_value(uint8_t ntc_value)
 {
     
     static uint8_t current_value = 0; // 当前显示值
-	static uint8_t compare_up_counter,compare_down_counter;
+	
     static uint8_t init_done = 0;
     int16_t diff;
 
@@ -1208,8 +1208,10 @@ uint8_t ntc_res_linear_value(uint8_t ntc_value)
            current_value--; // 每次只减 1
         }
     }
-    // diff == 0 时，不变
-
+    else if(diff==0){// diff == 0 时，不变
+		compare_down_counter=0;
+		compare_up_counter=0;
+	}
     return current_value;
 }
 
