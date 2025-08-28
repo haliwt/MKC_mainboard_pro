@@ -26,7 +26,9 @@ void power_on_handler(void)
 
  static void power_on_process(void)
  {
-    switch(power_on_next_step){
+    
+   static uint8_t adc_counter;
+   switch(power_on_next_step){
 
      case 0:
        power_off_next_step=0;
@@ -50,7 +52,7 @@ void power_on_handler(void)
 
      case 2:
 
-        if(g_pro.gTimer_adc_counter> 7){ //send temperature value to dispalboard
+        if(g_pro.gTimer_adc_counter> 2){ //send temperature value to dispalboard
             g_pro.gTimer_adc_counter=0;
           
             adcRead_voltageValue();
@@ -62,9 +64,28 @@ void power_on_handler(void)
      break;
 
      case 3:
-       ultrasonic_output();
-       vTaskDelay(2000);
-       ultrasonic_stop();
+
+      if(g_pro.gTimer_adc_water_counter > 3){
+
+         g_pro.gTimer_adc_water_counter=0;
+
+       if(readAtomization_adc_value() < 3000 ){
+           
+           if(adc_counter ==0){
+                 adc_counter++;
+           }
+           else{
+           ultrasonic_output();
+        
+           sendCmd_to_dispBoard(0x15,0x01);
+           }
+       }
+       else{
+          sendCmd_to_dispBoard(0x15,0x0);
+          ultrasonic_stop();
+          }
+       }
+      
       power_on_next_step=2;
     break;
 

@@ -1195,7 +1195,7 @@ uint8_t ntc_res_linear_value(uint8_t ntc_value)
     if (diff > 0) {
     	compare_up_counter++;
     	compare_down_counter=0;
-       if(compare_up_counter > 2){
+       if(compare_up_counter > 3){
        	  compare_up_counter=0;
           current_value++; // 每次只加 1
         }
@@ -1203,7 +1203,7 @@ uint8_t ntc_res_linear_value(uint8_t ntc_value)
     else if (diff < 0) {
     	compare_down_counter++;
     	compare_up_counter=0;
-    	if(compare_down_counter > 2){
+    	if(compare_down_counter > 3){
     	   compare_down_counter=0;
            current_value--; // 每次只减 1
         }

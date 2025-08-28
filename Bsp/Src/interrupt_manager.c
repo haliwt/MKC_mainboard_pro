@@ -13,6 +13,7 @@ void tim17_callback_handler(void)
 	   tim17_counter=0;
         
 	   g_pro.gTimer_adc_counter++;
+	   g_pro.gTimer_adc_water_counter++;
 	}
 
 

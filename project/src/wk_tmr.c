@@ -99,9 +99,9 @@ void wk_tmr1_init(void)
   tmr_brk_filter_value_set(TMR1, 0);
 
 
-  tmr_output_enable(TMR1, TRUE);
+  tmr_output_enable(TMR1, FALSE);
 
-  tmr_counter_enable(TMR1, TRUE);
+  tmr_counter_enable(TMR1, FALSE);
 
   /* add user code begin tmr1_init 2 */
 

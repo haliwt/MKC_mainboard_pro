@@ -12,5 +12,7 @@ extern  uint16_t adc_buf[ADC_CHANNEL_COUNT];
 
 uint8_t readAmbinet_temp_value(void);
 
+uint16_t readAtomization_adc_value(void);
+
 #endif 
 

@@ -64,6 +64,13 @@ uint8_t readAmbinet_temp_value(void)
      return disp_temp;
 }
 
+uint16_t readAtomization_adc_value(void)
+{
+  
+     return adc_t.adc_atomization;
+
+}
+
 /**
  * 
  * @brief: read ADC switch result voltage value 
