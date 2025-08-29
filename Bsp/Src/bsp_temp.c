@@ -8,7 +8,7 @@
  */
 void TEC_SetTargTemp(uint8_t amtemp_value)
 {
-     if(g_pro.set_temp_value <= amtemp_value){ //this is cooler don't heat.
+     if(g_pro.set_temp_value < amtemp_value){ //this is cooler don't heat.
 
           cooler_open();
 
