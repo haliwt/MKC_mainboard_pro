@@ -53,9 +53,9 @@ void wk_adc1_init(void)
 
   /* gpio--------------------------------------------------------------------*/
   /* configure the IN6 pin */
-  gpio_init_struct.gpio_mode = GPIO_MODE_ANALOG;
-  gpio_init_struct.gpio_pins = ADC_DET24V_PIN;
-  gpio_init(ADC_DET24V_GPIO_PORT, &gpio_init_struct);
+//  gpio_init_struct.gpio_mode = GPIO_MODE_ANALOG;
+//  gpio_init_struct.gpio_pins = ADC_DET24V_PIN;
+//  gpio_init(ADC_DET24V_GPIO_PORT, &gpio_init_struct);
 
   /* configure the IN8 pin */
   gpio_init_struct.gpio_mode = GPIO_MODE_ANALOG;
@@ -76,13 +76,13 @@ void wk_adc1_init(void)
   adc_base_struct.sequence_mode = TRUE;//FALSE; //be used to set "TRUE" ,has three channel .
   adc_base_struct.repeat_mode = FALSE;
   adc_base_struct.data_align = ADC_RIGHT_ALIGNMENT;
-  adc_base_struct.ordinary_channel_length = 3;//1; need ADC1 switch three channel .
+  adc_base_struct.ordinary_channel_length = 2;//1; need ADC1 switch three channel .
   adc_base_config(ADC1, &adc_base_struct);
 
   /* adc_ordinary_conversionmode---------------------------------------------------- */
-  adc_ordinary_channel_set(ADC1, ADC_CHANNEL_6, 1, ADC_SAMPLETIME_7_5 );
-  adc_ordinary_channel_set(ADC1, ADC_CHANNEL_8, 2, ADC_SAMPLETIME_7_5 );
-  adc_ordinary_channel_set(ADC1, ADC_CHANNEL_9, 3, ADC_SAMPLETIME_7_5 );
+ // adc_ordinary_channel_set(ADC1, ADC_CHANNEL_6, 1, ADC_SAMPLETIME_7_5 );
+  adc_ordinary_channel_set(ADC1, ADC_CHANNEL_8, 1, ADC_SAMPLETIME_7_5 );
+  adc_ordinary_channel_set(ADC1, ADC_CHANNEL_9, 2, ADC_SAMPLETIME_7_5 );
   
 
   adc_ordinary_conversion_trigger_set(ADC1, ADC12_ORDINARY_TRIG_SOFTWARE, TRUE);

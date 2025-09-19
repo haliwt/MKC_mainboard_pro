@@ -2,7 +2,7 @@
 #define __BSP_DMA_ADC_H
 #include "at32f425.h"
 
-#define ADC_CHANNEL_COUNT 3
+#define ADC_CHANNEL_COUNT 2
 
 volatile extern uint8_t dma_trans_complete_flag;
 

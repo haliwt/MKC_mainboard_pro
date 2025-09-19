@@ -50,15 +50,15 @@ void wk_gpio_config(void)
   /* add user code end gpio_config 1 */
 
   /* gpio output config */
-  gpio_bits_reset(GPIOC, COOLER_PIN | FAN_GROUP_PIN | FAN_CTL_PIN);
+  gpio_bits_reset(GPIOA, COOLER_PIN | FAN_ENABLE_12V_PIN  |FAN_12V_CTL_PIN | FAN_24V_CTL_PIN);
   gpio_bits_reset(PLASMA_GPIO_PORT, PLASMA_PIN);
 
   gpio_init_struct.gpio_drive_strength = GPIO_DRIVE_STRENGTH_MODERATE;
   gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
   gpio_init_struct.gpio_mode = GPIO_MODE_OUTPUT;
-  gpio_init_struct.gpio_pins = COOLER_PIN | FAN_GROUP_PIN | FAN_CTL_PIN;
+  gpio_init_struct.gpio_pins = COOLER_PIN | FAN_ENABLE_12V_PIN|FAN_12V_CTL_PIN | FAN_24V_CTL_PIN;
   gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
-  gpio_init(GPIOC, &gpio_init_struct);
+  gpio_init(GPIOA, &gpio_init_struct);
 
   gpio_init_struct.gpio_drive_strength = GPIO_DRIVE_STRENGTH_MODERATE;
   gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;

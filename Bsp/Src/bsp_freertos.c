@@ -48,13 +48,13 @@ uint8_t fan_switch_flag,power_on_flag = 0;
 **********************************************************************************************************/
 void freertos_handler(void)
 {
-     /* 青涘缓浠诲姟 */
+     /* creat new task */
 	  AppTaskCreate();
 	  
-	  /* 青涘缓浠诲姟閫氫俊靈哄埗 */
+	  /*  */
 //	   AppObjCreate();
 	  
-	  /* 靚姩璋冨害锛屽紑濮嬫墽睛屼杢锟?1锄1�71�1�77?7?1锄1�71�1�77?1锄1�71�1�77?7?7 */
+	  /*  */
 	   vTaskStartScheduler();
 
 
@@ -75,6 +75,7 @@ static void vTaskMsgPro(void *pvParameters)
      
    if(sound_first_flag ==0){
        sound_first_flag++;
+	   
        buzzer_sound();
 
    }

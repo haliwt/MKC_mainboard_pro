@@ -1,30 +1,45 @@
 #include "bsp.h"
 
 
-void fan_group_open(void)
+void fan_24v_group_open(void)
 {
-   FAN_GROUP_GPIO_PORT->scr = FAN_GROUP_PIN;
+   FAN_24V_CTL_GPIO_PORT->scr = FAN_24V_CTL_PIN;
 
 }
-void fan_group_close(void)
+void fan_24v_group_close(void)
 {
    
-FAN_GROUP_GPIO_PORT->clr = FAN_GROUP_PIN;
+   FAN_24V_CTL_GPIO_PORT->clr = FAN_24V_CTL_PIN;
 
 }
 
-
-void fan_oneself_open(void)
+void fan_12v_open(void)
 {
-  FAN_CTL_GPIO_PORT ->scr = FAN_CTL_PIN ;
+
+	FAN_12V_CTL_GPIO_PORT->scr = FAN_12V_CTL_PIN;
 
 }
-void fan_oneself_close(void)
+void fan_12v_close(void)
 {
-	FAN_CTL_GPIO_PORT ->clr = FAN_CTL_PIN ;
+
+	FAN_12V_CTL_GPIO_PORT->clr = FAN_12V_CTL_PIN;
+}
+
+void fan_12v_enable(void)
+{
+	FAN_ENABLE_12V_GPIO_PORT->scr = FAN_ENABLE_12V_PIN;
+
+}
+void fan_12v_disable(void)
+{
+	FAN_ENABLE_12V_GPIO_PORT->clr = FAN_ENABLE_12V_PIN;
+
 
 
 }
+
+
+
 
 
 

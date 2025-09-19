@@ -33,11 +33,11 @@ void adcRead_voltageValue(void)
    
 	
    
-     adc_t.adc_detected= (adc_buf[0]  * 3300)/4095;
+    // adc_t.adc_detected= (adc_buf[0]  * 3300)/4095;
      //vTaskDelay(pdMS_TO_TICKS(5));
-     adc_t.adc_temperature = (adc_buf[1] * 3300)/4095;
+     adc_t.adc_temperature = (adc_buf[0] * 3300)/4095;
      //vTaskDelay(pdMS_TO_TICKS(5));
-     adc_t.adc_atomization =  (adc_buf[2] * 3300)/4095;
+     adc_t.adc_atomization =  (adc_buf[1] * 3300)/4095;
      //vTaskDelay(pdMS_TO_TICKS(5));
      
      Get_Ntc_Resistance_Temperature_Handler(adc_t.adc_temperature);
@@ -84,7 +84,7 @@ uint16_t readAtomization_adc_value(void)
   adc_base_struct.sequence_mode = TRUE;//FALSE; //be used to set "TRUE" ,has three channel .
   adc_base_struct.repeat_mode = FALSE;
   adc_base_struct.data_align = ADC_RIGHT_ALIGNMENT;
-  adc_base_struct.ordinary_channel_length = 3;//1; need ADC1 switch three channel .
+  adc_base_struct.ordinary_channel_length = 2;//1; need ADC1 switch three channel .
   adc_base_config(ADC1, &adc_base_struct);
   adc_ordinary_software_trigger_enable(ADC1, TRUE);
 

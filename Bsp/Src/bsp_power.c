@@ -43,8 +43,9 @@ void power_on_handler(void)
      break;
 
      case 1:
-        fan_group_open();
-        fan_oneself_open();
+        fan_24v_group_open();
+        fan_12v_enable();
+	    fan_12v_open();
         cooler_open();
         power_on_next_step=2;
 
@@ -156,7 +157,8 @@ static void power_off_process(void)
      case 0:
        power_on_next_step=0;
        cooler_close();
-      
+	   ultrasonic_stop();
+       
        power_off_next_step=1;
      break;
 
@@ -170,8 +172,9 @@ static void power_off_process(void)
      break;
 
      case 2:
-       fan_group_close();
-       fan_oneself_close();
+       fan_24v_group_close();
+	   fan_12v_disable();
+       fan_12v_close();
        power_off_next_step=3;
      break;
 

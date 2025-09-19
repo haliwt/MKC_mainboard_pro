@@ -32,3 +32,5 @@ void ultrasonic_stop(void)
   tmr_output_enable(TMR1, FALSE);
   tmr_counter_enable(TMR1, FALSE); //stop timer output pwm  
 }
+
+

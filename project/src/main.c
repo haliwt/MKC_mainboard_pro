@@ -6,7 +6,8 @@
   **************************************************************************
   *                       software recoder note
   * 1.this is main board codes.makeupCabinet 
-  *
+  * 2.DATA.20250.09.19 : new PCB, GPIO Be modify .
+  *        
   *
   **************************************************************************
   */
@@ -122,7 +123,7 @@ int main(void)
   wk_tmr1_init();
 
   /* init tmr2 function. */
-  wk_tmr2_init();
+  wk_tmr16_init();
 
   /* init tmr17 function. */
   wk_tmr17_init();
@@ -131,6 +132,7 @@ int main(void)
  // wk_freertos_init();
 
   /* add user code begin 2 */
+    ultrasonic_stop();
     tmr_counter_enable(TMR17, TRUE);
 	bsp_init();
    adc_ordinary_software_trigger_enable(ADC1, TRUE);
