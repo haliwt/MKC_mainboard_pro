@@ -1190,16 +1190,21 @@ uint8_t ntc_res_linear_value(uint8_t ntc_value)
     }
     
 
-     diff = (int16_t) ntc_value - (int16_t) current_value;
+    diff = (int16_t) ntc_value - (int16_t) current_value;
 
-    if (diff > 0) {
+    if (diff > 0 && diff < 6){
     	compare_up_counter++;
     	compare_down_counter=0;
        if(compare_up_counter > 3){
        	  compare_up_counter=0;
           current_value++; // 每次只加 1
         }
-    } 
+    }
+	else if( diff > 0 && diff > 5) {
+
+        current_value  = ntc_value ;
+
+	}
     else if (diff < 0) {
     	compare_down_counter++;
     	compare_up_counter=0;
@@ -1212,6 +1217,7 @@ uint8_t ntc_res_linear_value(uint8_t ntc_value)
 		compare_down_counter=0;
 		compare_up_counter=0;
 	}
+
     return current_value;
 }
 

@@ -196,7 +196,7 @@
     </PINInfo>
     <ProjectInfomation>
         <ProjectName>AT32F425C8T7_WorkBench</ProjectName>
-        <ProjectLocation>G:/Engineering_makeupCabinet_software_files/MakeupCabinet_mainBoard_Codes</ProjectLocation>
+        <ProjectLocation>G:/Engineering_makeupCabinet_software_files/MakeupCabinet_mainBoard_Codes/AT32F425C8T7_mainboard (2)</ProjectLocation>
         <ToolchainIDE>MDK_V5</ToolchainIDE>
         <ARMCompiler>0</ARMCompiler>
         <KeepUserCode>true</KeepUserCode>
