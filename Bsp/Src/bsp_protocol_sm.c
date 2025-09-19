@@ -435,7 +435,7 @@ static void getParseCmd_displayBoard(void)
 
       }
       else{
-          buzzer_on_sound();
+          buzzer_no_sound();
       }
     }
 
@@ -449,7 +449,7 @@ static void getParseCmd_displayBoard(void)
             responseCmd_fun(0x16,sm.cmd_fun_code);
       }
       else{
-          buzzer_on_sound();
+          buzzer_no_sound();
           responseCmd_fun(0x16,0x00);
       }
   }

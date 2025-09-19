@@ -5,7 +5,7 @@
 
 void buzzer_sound(void);
 
-void buzzer_on_sound(void);
+void buzzer_no_sound(void);
 
 #endif 
 

@@ -125,7 +125,7 @@ void wk_tmr1_init(void)
 //  gpio_default_para_init(&gpio_init_struct);
 
 //  /* add user code begin tmr2_init 1 */
-
+    //  crm_periph_clock_enable(CRM_TMR2_PERIPH_CLOCK, TRUE); //THIS IS OPEN TMR16 CLOCK .WT.EDTI 2025.09.19
 //  /* add user code end tmr2_init 1 */
 
 //  /* configure the tmr2 CH1 pin */
@@ -217,7 +217,7 @@ void wk_tmr16_init(void)
   tmr_output_struct.oc_idle_state = FALSE;
   tmr_output_struct.occ_idle_state = FALSE;
   tmr_output_channel_config(TMR16, TMR_SELECT_CHANNEL_1, &tmr_output_struct);
-  tmr_channel_value_set(TMR16, TMR_SELECT_CHANNEL_1, 125);//PWM_DUTY = 50% WT.EDIT 2025.09.19
+  tmr_channel_value_set(TMR16, TMR_SELECT_CHANNEL_1, 0);
   tmr_output_channel_buffer_enable(TMR16, TMR_SELECT_CHANNEL_1, FALSE);
 
   tmr_output_channel_immediately_set(TMR16, TMR_SELECT_CHANNEL_1, FALSE);

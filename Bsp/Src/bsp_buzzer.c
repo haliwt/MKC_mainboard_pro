@@ -40,10 +40,9 @@ tmr_output_config_type tmr_output_struct;
   tmr_channel_value_set(TMR16, TMR_SELECT_CHANNEL_1, 125);
   tmr_output_channel_immediately_set(TMR16, TMR_SELECT_CHANNEL_1, TRUE);
   tmr_counter_enable(TMR16, TRUE);
-  printf("buzzer sound !!!\r\n");
+  
 
   vTaskDelay(pdMS_TO_TICKS(20));
- // tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, 125);
   tmr_output_channel_immediately_set(TMR16, TMR_SELECT_CHANNEL_1,FALSE);
   tmr_counter_enable(TMR16, FALSE); //stop timer output pwm 
 
@@ -51,7 +50,7 @@ tmr_output_config_type tmr_output_struct;
 }
 
 
-void buzzer_on_sound(void)
+void buzzer_no_sound(void)
 {
   // tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, 125);
   //tmr_output_channel_immediately_set(TMR2, TMR_SELECT_CHANNEL_1,FALSE);

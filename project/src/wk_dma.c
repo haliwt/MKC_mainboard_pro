@@ -162,7 +162,7 @@ void wk_dma1_channel3_init(void)
 
   dma_reset(DMA1_CHANNEL3);
   dma_default_para_init(&dma_init_struct);
-  dma_init_struct.buffer_size = 3;//WT.EDIT has three input ADC
+  dma_init_struct.buffer_size = 2;//WT.EDIT has three input ADC
   dma_init_struct.direction = DMA_DIR_PERIPHERAL_TO_MEMORY;
   dma_init_struct.memory_base_addr = (uint32_t)adc_buf; //ADC switch to save data to "adc1_buf"
   dma_init_struct.memory_data_width = DMA_MEMORY_DATA_WIDTH_HALFWORD;

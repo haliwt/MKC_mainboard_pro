@@ -100,16 +100,21 @@ void power_on_handler(void)
 
        if(readAtomization_adc_value() < 3000 ){
            
-           if(adc_counter ==0){
-                 adc_counter++;
-           }
-           else{
-           ultrasonic_output();
+          
+           adc_counter++;
+		   if(adc_counter > 1){
+               adc_counter =3;
+			  ultrasonic_output();
         
-           sendCmd_to_dispBoard(0x15,0x01);
-           }
+              sendCmd_to_dispBoard(0x15,0x01);
+		   }
+		
+         
+           
+           
        }
        else{
+	   	  adc_counter=0;
           sendCmd_to_dispBoard(0x15,0x0);
           ultrasonic_stop();
           }
