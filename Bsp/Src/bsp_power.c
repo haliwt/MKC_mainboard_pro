@@ -94,7 +94,7 @@ void power_on_handler(void)
 
      case 5:
 
-      if(g_pro.gTimer_adc_water_counter > 3){
+      if(g_pro.gTimer_adc_water_counter > 1){
 
          g_pro.gTimer_adc_water_counter=0;
 
