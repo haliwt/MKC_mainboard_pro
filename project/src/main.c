@@ -135,7 +135,7 @@ int main(void)
     ultrasonic_stop();
     tmr_counter_enable(TMR17, TRUE);
 	bsp_init();
-   adc_ordinary_software_trigger_enable(ADC1, TRUE);
+    adc_ordinary_software_trigger_enable(ADC1, TRUE);
     freertos_handler();
   /* add user code end 2 */
 

@@ -39,7 +39,7 @@
 void wk_usart1_init(void)
 {
   /* add user code begin usart1_init 0 */
-
+  // display board TX and RX 
   /* add user code end usart1_init 0 */
 
   gpio_init_type gpio_init_struct;

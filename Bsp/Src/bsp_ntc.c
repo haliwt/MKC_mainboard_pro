@@ -20,7 +20,7 @@ uint8_t array_subscript;
 
 uint8_t disp_temp_degree;
 uint8_t search_key;
-uint8_t compare_up_counter,compare_down_counter;
+//uint8_t compare_up_counter,compare_down_counter;
 
 static int8_t  Binary_Search(const uint8_t *array ,uint8_t key,uint8_t length);
 
@@ -190,12 +190,16 @@ void getNtc_temperatureValue_init(uint16_t voltage)
     temp_vlue= voltage /100;
 	
 	length_simple =  sizeof(R10K_Init_0_120_simple)/sizeof(R10K_Init_0_120_simple[0]);
-    
+     
    	 disp_temp_degree = Binary_Search(R10K_Init_0_120_simple,temp_vlue,length_simple);
+
+	 if(disp_temp_degree >= 0){
     
-	Calculate_Speicial_Temperature_Value(disp_temp_degree);
-    
-    read_ntc_temperature_value = local_ntc_value;
+		Calculate_Speicial_Temperature_Value(disp_temp_degree);
+	    
+	    read_ntc_temperature_value = local_ntc_value;
+
+	 }
      
     
 
@@ -1163,7 +1167,7 @@ static uint8_t Calculate_Display_Temperature_Value(const uint16_t *pt,uint8_t ke
           }
 
       }
-      return i;
+     // return i;
 
 }
 
@@ -1192,30 +1196,29 @@ uint8_t ntc_res_linear_value(uint8_t ntc_value)
 
     diff = (int16_t) ntc_value - (int16_t) current_value;
 
-    if (diff > 0 && diff < 6){
-    	compare_up_counter++;
-    	compare_down_counter=0;
-       if(compare_up_counter > 3){
-       	  compare_up_counter=0;
-          current_value++; // 每次只加 1
-        }
+    if (diff > 0 && diff < 3){
+    
+         current_value++; // 每次只加 1
+        
     }
-	else if( diff > 0 && diff > 5) {
+	else if(diff > 2) {
 
         current_value  = ntc_value ;
 
 	}
-    else if (diff < 0) {
-    	compare_down_counter++;
-    	compare_up_counter=0;
-    	if(compare_down_counter > 3){
-    	   compare_down_counter=0;
-           current_value--; // 每次只减 1
-        }
+	else if(diff > -2 ){
+	    current_value  = ntc_value ;
+
+
+	}
+    else if (diff < -3) {
+    	
+        current_value--; // 每次只减 1
+        
     }
     else if(diff==0){// diff == 0 时，不变
-		compare_down_counter=0;
-		compare_up_counter=0;
+		
+	    current_value = ntc_value;
 	}
 
     return current_value;

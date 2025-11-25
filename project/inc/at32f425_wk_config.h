@@ -89,14 +89,14 @@ extern "C" {
 
 /* Private defines -------------------------------------------------------------*/
 //new PCB 
-#define COOLER_PIN          GPIO_PINS_7//GPIO_PINS_13
-#define COOLER_GPIO_PORT    GPIOA//GPIOC
+#define COOLER_PIN          GPIO_PINS_7
+#define COOLER_GPIO_PORT    GPIOA
 
 #define BEEP_PWM_PIN            GPIO_PINS_8//GPIO_PINS_5
 #define BEEP_PWM_GPIO_PORT      GPIOB//GPIOA
 //FAN GPIO
-#define FAN_ENABLE_12V_PIN    			GPIO_PINS_6
-#define FAN_ENABLE_12V_GPIO_PORT    	GPIOA
+#define OUTPUT_12V_ENABLE_PIN    			GPIO_PINS_6
+#define OUTPUT_12V_ENABLE_GPIO_PORT    	GPIOA
 
 #define FAN_12V_CTL_PIN         		GPIO_PINS_4
 #define FAN_12V_CTL_GPIO_PORT      		GPIOA
@@ -117,6 +117,13 @@ extern "C" {
 
 #define PLASMA_PIN                    GPIO_PINS_10//GPIO_PIN_6
 #define PLASMA_GPIO_PORT              GPIOB
+
+//HALL GPIO LED STRIP
+#define HAL_PIN                        GPIO_PINS_7
+#define HAL_GPIO_PORT                  GPIOB
+
+#define LED_DOOR_PIN                   GPIO_PINS_9
+#define LED_DOOR_GPIO_PORT             GPIOB  
 
 /* exported functions ------------------------------------------------------- */
   /* system clock config. */

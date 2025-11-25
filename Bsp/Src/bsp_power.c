@@ -28,17 +28,19 @@ void power_on_handler(void)
 
  static void power_on_process(void)
  {
-   static uint8_t read_main_counter;
-   static uint8_t adc_counter,read_temp_value;
+   static uint8_t read_main_counter,read_temp_value,adc_counter;
+   static uint8_t read_temp_flag;
    switch(power_on_next_step){
 
      case 0:
        power_off_next_step=0;
      
-       g_pro.gTimer_adc_counter=0;
-       g_pro.set_temp_value=20; //temp max is 20 
+ 
+       g_pro.set_temp_value=20; //temp max is 20 ,min is 10 degree.
+       g_pro.plasma_flag=open;
        sendData_to_dispBoard(0x1A,readAmbinet_temp_value());
-   
+
+	   
         power_on_next_step=1;
      break;
 
@@ -46,14 +48,16 @@ void power_on_handler(void)
         fan_24v_group_open();
         fan_12v_enable();
 	    fan_12v_open();
-        cooler_open();
+        plasma_open();
+		cooler_open();
         power_on_next_step=2;
+		LED_TRIP_ON() ;
 
      break;
 
      case 2:
           read_main_counter++;
-          if(read_main_counter > 9){
+          if(read_main_counter > 3){
               read_main_counter=0;
           if(g_pro.plasma_flag == open){
               plasma_open();
@@ -67,36 +71,40 @@ void power_on_handler(void)
          power_on_next_step=3;
      break;
 
-     case 3:
+	 case 3:
 
-        if(g_pro.gTimer_adc_counter> 2){ //send temperature value to dispalboard
-            g_pro.gTimer_adc_counter=0;
-          
-            adcRead_voltageValue();
-            read_temp_value = readAmbinet_temp_value();
-           sendData_to_dispBoard(0x1A,read_temp_value);
-        }
-         power_on_next_step=4;
+	  if(g_pro.gTimer_adc_temp_counter > 0){
 
-     break;
+         g_pro.gTimer_adc_temp_counter=0;
 
-     case 4:
-       set_temp_counter++;
-       if(set_temp_counter > 29){
-           set_temp_counter=0;
-           flag_counter++;
+	      adcRead_voltageValue();
+          read_temp_value = readAmbinet_temp_value();
+          sendData_to_dispBoard(0x1A,read_temp_value); //display temperature value to display board.
+		  vTaskDelay(pdMS_TO_TICKS(10));
+		  read_temp_flag =1;
+
+	  	}
+	   power_on_next_step=4;
+	 break;
+
+	 case 4:
+        if(read_temp_flag == 1){
+           read_temp_flag=0;    //  g_pro.gTimer_set_temp_counter=0;
+
           TEC_SetTargTemp(read_temp_value);
 
        }
 
         power_on_next_step=5;
-     break;
+
+	 break;
 
      case 5:
 
-      if(g_pro.gTimer_adc_water_counter > 1){
+      if(g_pro.gTimer_adc_water_counter > 2){
 
          g_pro.gTimer_adc_water_counter=0;
+
 
        if(readAtomization_adc_value() < 3000 ){
            
@@ -106,7 +114,8 @@ void power_on_handler(void)
                adc_counter =3;
 			  ultrasonic_output();
         
-              sendCmd_to_dispBoard(0x15,0x01);
+              sendCmd_to_dispBoard(0x15,0x01); //atomization send to display board .
+              vTaskDelay(pdMS_TO_TICKS(10));
 		   }
 		
          
@@ -115,19 +124,17 @@ void power_on_handler(void)
        }
        else{
 	   	  adc_counter=0;
-          sendCmd_to_dispBoard(0x15,0x0);
+          
           ultrasonic_stop();
+	      sendCmd_to_dispBoard(0x15,0x0); //atomization send to display board.
+	      vTaskDelay(pdMS_TO_TICKS(10));
           }
        }
       
       power_on_next_step=2;
     break;
 
-
-
-
-
-     default:
+    default:
      break;
 
     }
@@ -155,8 +162,6 @@ void power_off_handler(void)
 static void power_off_process(void)
 {
    
-   static uint16_t delay_counter;
-  
    switch(power_off_next_step){
 
      case 0:
@@ -184,9 +189,9 @@ static void power_off_process(void)
      break;
 
      case 3:
-        delay_counter++; //run instructions is about 20ns .
-        if(delay_counter > 60000){ //60000*20ns = 1.2ms
-          delay_counter=0;
+       if(g_pro.gTimer_adc_water_counter > 1){
+
+          g_pro.gTimer_adc_water_counter=0;
           adcRead_voltageValue();
         }
         power_off_next_step=1;

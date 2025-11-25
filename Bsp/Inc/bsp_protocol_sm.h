@@ -6,6 +6,7 @@
 
 #define FRAME_HEADER 0xA5
 #define DEVICE_ID    0x02
+#define NEW_CMD_COPY   0x80
 #define FUNC_DATA    0x0F
 #define FRAME_TAIL   0xFE
 #define MAX_DATA_LEN 20

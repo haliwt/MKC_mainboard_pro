@@ -64,8 +64,8 @@ bool protocol_sm_cmd_input(const uint8_t *data,uint8_t data_length)
        
 
     case SM_WAIT_FIXED: //0x01--"0x02" display board 
-        if (data[1] == DEVICE_ID) {
-           
+        if (data[1] == DEVICE_ID || data[1]==NEW_CMD_COPY) {
+
            sm.state = SM_WAIT_CMD_NOTICE;
            sm.idx = 2;
             
@@ -91,7 +91,7 @@ bool protocol_sm_cmd_input(const uint8_t *data,uint8_t data_length)
        
 
     //command notice 
-    case SM_WAIT_CMD_TAIL:
+    case SM_WAIT_CMD_TAIL://6
         if (data[4] == FRAME_TAIL) {
            
            sm.state = SM_WAIT_CMD_BCC;
@@ -106,7 +106,7 @@ bool protocol_sm_cmd_input(const uint8_t *data,uint8_t data_length)
 
 
   
-    case SM_WAIT_CMD_BCC:
+    case SM_WAIT_CMD_BCC://7
        sm.bcc_data = data[5];
  
       calc =  calc_bcc(data, 5);
@@ -366,6 +366,7 @@ static void getParseData_displayBoard(void)
    {
    case 0x1B : //set temperarue value .cmd=0x1B.
         if(sm.data_length==1){
+		   g_pro.set_temerature_value_flag = 1;
            g_pro.set_temp_value = sm.data_buf[0];
         }
 
@@ -417,11 +418,13 @@ static void getParseCmd_displayBoard(void)
     if(sm.cmd_fun_code==0x01){//power on
            buzzer_sound() ; 
            responseCmd_fun(0x03,sm.cmd_fun_code);
+	       plasma_open();
            g_pro.plasma_flag =open;
     }
     else{
            buzzer_sound() ; 
            responseCmd_fun(0x03,sm.cmd_fun_code);
+           plasma_close();
            g_pro.plasma_flag =close;
     }
 
@@ -471,22 +474,22 @@ static void getParseCmd_displayBoard(void)
  * @param   
  * @retval  
  */
-static void ack_to_dispboard_handler(void)
-{
-   switch( sm.cmd_notice ){
+//static void ack_to_dispboard_handler(void)
+//{
+//   switch( sm.cmd_notice ){
 
 
-     case 0x01:
+//     case 0x01:
 
-    break;
-
-
-
+//    break;
 
 
 
-   }
 
 
 
-}
+//   }
+
+
+
+//}

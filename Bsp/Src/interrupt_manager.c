@@ -11,9 +11,9 @@ void tim17_callback_handler(void)
 	if(tim17_counter >999){
 
 	   tim17_counter=0;
-        
-	   g_pro.gTimer_adc_counter++;
+      // g_pro.gTimer_set_temp_counter++;
 	   g_pro.gTimer_adc_water_counter++;
+	   g_pro.gTimer_adc_temp_counter++;
 	}
 
 

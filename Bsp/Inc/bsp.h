@@ -41,6 +41,7 @@
 #include "bsp_protocol_sm.h"
 #include "bsp_ntc.h"
 #include "bsp_temp.h"
+#include "bsp_hal.h"
 #include "bsp_power.h"
 
 #include "bsp_freertos.h"
@@ -48,7 +49,7 @@
 
 #define  USE_FreeRTOS      1
 
-#define  DEBUG_FLAG        1
+
 
 
 #if USE_FreeRTOS == 1
@@ -61,7 +62,10 @@
 #endif
 
 /* Ä¬ÈÏÊÇ¹Ø±Õ×´Ì¬ */
-#define  Enable_EventRecorder  1
+#define  Enable_EventRecorder  0
+
+#define  DEBUG_FLAG        Enable_EventRecorder
+
 
 #if Enable_EventRecorder == 1
 	#include "EventRecorder.h"
@@ -83,10 +87,11 @@ typedef struct {
     uint8_t power_on;   // 开机标志
     uint8_t plasma_flag;
     uint8_t set_temp_value;
-    uint8_t mode;
-    uint8_t error_code;
+   
+	uint8_t set_temerature_value_flag ;
     // ... 其他系统状态
-   uint8_t gTimer_adc_counter;
+  // uint8_t gTimer_set_temp_counter;
+   uint8_t gTimer_adc_temp_counter;
    uint8_t gTimer_adc_water_counter;
 } system_param_t;
 

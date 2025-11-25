@@ -32,8 +32,7 @@ void adcRead_voltageValue(void)
     /* 打印采样结果 */
    
 	
-   
-     // adc_t.adc_detected= (adc_buf[2]  * 3300)/4095;
+    // adc_t.adc_detected= (adc_buf[2]  * 3300)/4095;
      //vTaskDelay(pdMS_TO_TICKS(5));
      adc_t.adc_temperature = (adc_buf[0] * 3300)/4095;
      //vTaskDelay(pdMS_TO_TICKS(5));
@@ -60,7 +59,12 @@ void adcRead_voltageValue(void)
     
 
 }
-
+/**
+ * 
+ * @brief: read ADC switch result voltage value 
+ * @note:
+ * @parameter :
+ */
 uint8_t readAmbinet_temp_value(void)
 {
      return disp_temp;

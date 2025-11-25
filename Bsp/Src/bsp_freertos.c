@@ -75,7 +75,7 @@ static void vTaskMsgPro(void *pvParameters)
      
    if(sound_first_flag ==0){
        sound_first_flag++;
-	   
+	  
        buzzer_sound();
 
    }
@@ -87,7 +87,7 @@ static void vTaskMsgPro(void *pvParameters)
 
      power_off_handler();
    }
-  
+     door_state_hanlder();
 	 vTaskDelay(pdMS_TO_TICKS(50));
 				                                   
  	}
@@ -145,7 +145,7 @@ void AppTaskCreate (void)
  
   xTaskCreate( vTaskMsgPro,     		/* 浠诲姟靑芥暟  */
                  "vTaskMsgPro",   		/* 浠诲姟锟?1锄1�71�1�77?7?1锄1�71�1�77?1锄1�71�1�77?7?7    */
-                 128,            		/* 浠诲姟靝堝㝇睝忥紝靗曚綅word锛屼篃睝辨槸4瀛楄妄1�71�1�77 */
+                 256,            		/* 浠诲姟靝堝㝇睝忥紝靗曚綅word锛屼篃睝辨槸4瀛楄妄1�71�1�77 */
                  NULL,           		/* 浠诲姟静傛暟  */
                  1,              		/* 浠诲姟浼樺厛锄1�71�1�77?1锄1�71�1�77?7?1锄1�71�1�77?1锄1�71�1�77?7?7 靝帮拄1�71�1�771锄1�71�1�77?7锄1�71�1�77?1锄1�71�1�77?7瓒婂皬浼樺厛绾ц秺浣庯紝杩欎釜璺焨COS革�6�0弄1�71�1�77 */
                  &xHandleTaskMsgPro);   /* 浠诲姟静ユ焺  */

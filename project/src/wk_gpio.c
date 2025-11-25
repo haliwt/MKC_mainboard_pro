@@ -50,24 +50,29 @@ void wk_gpio_config(void)
   /* add user code end gpio_config 1 */
 
   /* gpio output config */
-  gpio_bits_reset(GPIOA, COOLER_PIN | FAN_ENABLE_12V_PIN  |FAN_12V_CTL_PIN | FAN_24V_CTL_PIN);
-  gpio_bits_reset(PLASMA_GPIO_PORT, PLASMA_PIN);
+  gpio_bits_reset(GPIOA, COOLER_PIN | OUTPUT_12V_ENABLE_PIN  |FAN_12V_CTL_PIN | FAN_24V_CTL_PIN);
+  gpio_bits_reset(PLASMA_GPIO_PORT, PLASMA_PIN|LED_DOOR_PIN);
 
   gpio_init_struct.gpio_drive_strength = GPIO_DRIVE_STRENGTH_MODERATE;
   gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
   gpio_init_struct.gpio_mode = GPIO_MODE_OUTPUT;
-  gpio_init_struct.gpio_pins = COOLER_PIN | FAN_ENABLE_12V_PIN|FAN_12V_CTL_PIN | FAN_24V_CTL_PIN;
-  gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
+  gpio_init_struct.gpio_pins = COOLER_PIN | OUTPUT_12V_ENABLE_PIN|FAN_12V_CTL_PIN | FAN_24V_CTL_PIN;
+  gpio_init_struct.gpio_pull = GPIO_PULL_DOWN; //NONE;
   gpio_init(GPIOA, &gpio_init_struct);
 
   gpio_init_struct.gpio_drive_strength = GPIO_DRIVE_STRENGTH_MODERATE;
   gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
   gpio_init_struct.gpio_mode = GPIO_MODE_OUTPUT;
-  gpio_init_struct.gpio_pins = PLASMA_PIN;
-  gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
+  gpio_init_struct.gpio_pins = PLASMA_PIN | LED_DOOR_PIN;
+  gpio_init_struct.gpio_pull = GPIO_PULL_DOWN;//NONE;
   gpio_init(PLASMA_GPIO_PORT, &gpio_init_struct);
 
   /* add user code begin gpio_config 2 */
+    /* gpio input config */
+  gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
+  gpio_init_struct.gpio_pins = HAL_PIN;
+  gpio_init_struct.gpio_pull = GPIO_PULL_UP;//NONE;
+  gpio_init(HAL_GPIO_PORT, &gpio_init_struct);
 
   /* add user code end gpio_config 2 */
 }

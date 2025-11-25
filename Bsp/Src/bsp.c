@@ -12,6 +12,7 @@ system_param_t g_pro = {0}; // 默认初始化
 void bsp_init(void)
 {
 	protocol_sm_init() ;
+	callback_register_usart1_rx();
 	#if(Enable_EventRecorder == 1) 
 		/* ³õÊ¼»¯EventRecorder²¢¿ªÆô */
 		EventRecorderInitialize(EventRecordAll, 1U);

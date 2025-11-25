@@ -27,12 +27,12 @@ void fan_12v_close(void)
 
 void fan_12v_enable(void)
 {
-	FAN_ENABLE_12V_GPIO_PORT->scr = FAN_ENABLE_12V_PIN;
+	OUTPUT_12V_ENABLE_GPIO_PORT->scr = OUTPUT_12V_ENABLE_PIN;
 
 }
 void fan_12v_disable(void)
 {
-	FAN_ENABLE_12V_GPIO_PORT->clr = FAN_ENABLE_12V_PIN;
+	OUTPUT_12V_ENABLE_GPIO_PORT->clr = OUTPUT_12V_ENABLE_PIN;
 
 
 

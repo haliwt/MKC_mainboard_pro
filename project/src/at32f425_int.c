@@ -322,7 +322,8 @@ void USART1_IRQHandler(void)
         // 设置接收完成标志
         //g_pro.rx_usart1_complete_flag = 1;
        // usart1_irq_callback_handler();
-       usart1_irq_callback_process_rx();
+       //usart1_irq_callback_process_rx();
+       usart1_rx_callback_invoke();
     }
   /* add user code end USART1_IRQ 0 */
   /* add user code begin USART1_IRQ 1 */

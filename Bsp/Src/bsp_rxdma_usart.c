@@ -1,6 +1,7 @@
 #include "bsp.h"
 
 
+static void usart1_irq_callback_process_rx(void);
 
 uint8_t frame_buf[FRAME_MAX_LEN ];
 
@@ -10,6 +11,35 @@ uint8_t pos, rx_len,rx_pos, rx_last,last_pos;
 volatile uint8_t rx_ready = false;
 
 volatile uint8_t dma_last_pos = 0; // 上次处理结束位置
+
+typedef void (*Usart1RxCallback)(void);
+
+static Usart1RxCallback usart1_rx_cb = NULL;
+
+//注册回调函数
+void usart1_register_rx_callback(Usart1RxCallback cb)
+{
+   usart1_rx_cb = cb;
+
+}
+
+// 提供一个接口给中断调用
+void usart1_rx_callback_invoke(void)
+{
+    if (usart1_rx_cb != NULL)
+    {
+        usart1_rx_cb();
+    }
+}
+
+
+//实现回调函数的具体方法
+void callback_register_usart1_rx(void)
+{
+    usart1_register_rx_callback(usart1_irq_callback_process_rx);
+
+}
+
 
 
 // 上层直接处理新数据的回调函数（零拷贝）
@@ -71,7 +101,7 @@ void usart1_dma_rx_handler(void)
  * @param   None                
  * @retval  None
  */
-void usart1_irq_callback_process_rx(void)
+static void usart1_irq_callback_process_rx(void)
 {
   #if 0
 	pos = RX_BUFFER_SIZE - dma_data_number_get(DMA1_CHANNEL1); // 当前DMA写入位置

@@ -6,9 +6,12 @@
 
 extern uint8_t frame_buf[FRAME_MAX_LEN ];
 
-void usart1_irq_callback_process_rx(void);
+//void usart1_irq_callback_process_rx(void);
 
 void usart1_dma_rx_handler(void);
 
+void callback_register_usart1_rx(void);
+
+void usart1_rx_callback_invoke(void);
 
 #endif 
